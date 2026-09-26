@@ -15,7 +15,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 在仓库根目录执行：
 
 ~~~powershell
-.\scripts\setup.ps1
+.\scripts\setup.ps
 .\scripts\run_demo.ps1
 ~~~
 

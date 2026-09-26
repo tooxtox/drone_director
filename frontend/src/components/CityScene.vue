@@ -25,7 +25,9 @@ let lastTrackSelection = '';
 let lastShowTracks = true;
 let followedId = '';
 let followedPosition: Position | undefined;
-const palette = { teal: C.Color.fromCssColorString('#53dcca'), amber: C.Color.fromCssColorString('#ffba66'), red: C.Color.fromCssColorString('#ff6d78') };
+const palette = { teal: C.Color.fromCssColorString('#0e8f83'), amber: C.Color.fromCssColorString('#e8a33d'), red: C.Color.fromCssColorString('#d64545') };
+const ink = C.Color.fromCssColorString('#16202a');
+const paper = C.Color.WHITE;
 
 function world(position: Position) { return C.Matrix4.multiplyByPoint(transform, new C.Cartesian3(position.x, position.y, position.z), new C.Cartesian3()); }
 function upsert(id: string, options: C.Entity.ConstructorOptions, used: Set<string>) {
@@ -68,14 +70,14 @@ function drawStatic() {
   transform = C.Transforms.eastNorthUpToFixedFrame(origin);
   const b = env.bounds;
   const corners = [{ x: b.min_x, y: b.min_y, z: 0 }, { x: b.max_x, y: b.min_y, z: 0 }, { x: b.max_x, y: b.max_y, z: 0 }, { x: b.min_x, y: b.max_y, z: 0 }];
-  upsert('ground', { polygon: { hierarchy: new C.PolygonHierarchy(corners.map(world)), perPositionHeight: true, material: C.Color.fromCssColorString('#162836') } }, staticIds);
+  upsert('ground', { polygon: { hierarchy: new C.PolygonHierarchy(corners.map(world)), perPositionHeight: true, material: C.Color.fromCssColorString('#e0e6ee') } }, staticIds);
   const spacing = Math.max(100, Math.ceil((b.max_x - b.min_x) / 20 / 100) * 100);
-  for (let x = b.min_x; x <= b.max_x; x += spacing) upsert(`grid-x-${x}`, { polyline: { positions: [world({ x, y: b.min_y, z: 0.3 }), world({ x, y: b.max_y, z: 0.3 })], width: 1, material: C.Color.fromCssColorString('#2a3c49') } }, staticIds);
-  for (let y = b.min_y; y <= b.max_y; y += spacing) upsert(`grid-y-${y}`, { polyline: { positions: [world({ x: b.min_x, y, z: 0.3 }), world({ x: b.max_x, y, z: 0.3 })], width: 1, material: C.Color.fromCssColorString('#2a3c49') } }, staticIds);
+  for (let x = b.min_x; x <= b.max_x; x += spacing) upsert(`grid-x-${x}`, { polyline: { positions: [world({ x, y: b.min_y, z: 0.3 }), world({ x, y: b.max_y, z: 0.3 })], width: 1, material: C.Color.fromCssColorString('#c9d3de') } }, staticIds);
+  for (let y = b.min_y; y <= b.max_y; y += spacing) upsert(`grid-y-${y}`, { polyline: { positions: [world({ x: b.min_x, y, z: 0.3 }), world({ x: b.max_x, y, z: 0.3 })], width: 1, material: C.Color.fromCssColorString('#c9d3de') } }, staticIds);
   env.buildings.forEach(building => upsert(`building-${building.id}`, { polygon: {
     hierarchy: new C.PolygonHierarchy(building.footprint.points.map(p => world({ ...p, z: building.elevation }))),
     perPositionHeight: true, extrudedHeight: env.origin.altitude + building.elevation + building.height,
-    material: C.Color.fromCssColorString('#344958'), outline: true, outlineColor: C.Color.fromCssColorString('#4a6371'),
+    material: C.Color.fromCssColorString('#cfd7e1'), outline: true, outlineColor: C.Color.fromCssColorString('#a6b3c2'),
   } }, staticIds));
   followedPosition = undefined;
   resetCamera();
@@ -91,7 +93,7 @@ function drawTopology(state: Snapshot) {
       const color = colorFor(route);
       if (routeColors.get(route.id) === color) return;
       const entity = viewer?.entities.getById(`route-${route.id}`);
-      if (entity?.polyline) entity.polyline.material = new C.ColorMaterialProperty(palette[color].withAlpha(0.52));
+      if (entity?.polyline) entity.polyline.material = new C.ColorMaterialProperty(palette[color].withAlpha(0.72));
       routeColors.set(route.id, color);
     });
     return false;
@@ -105,14 +107,14 @@ function drawTopology(state: Snapshot) {
     if (positions.length < 2) return;
     const color = colorFor(route);
     routeColors.set(route.id, color);
-    upsert(`route-${route.id}`, { polyline: { positions: positions.map(world), width: 2, material: palette[color].withAlpha(0.52) } }, topologyIds);
+    upsert(`route-${route.id}`, { polyline: { positions: positions.map(world), width: 2, material: palette[color].withAlpha(0.72) } }, topologyIds);
   });
   state.waypoints.forEach(point => {
     const bay = point.type === 'emergency_bay';
     const special = bay || point.type === 'vertiport';
     upsert(`waypoint-${point.id}`, { position: world(point.position),
-      point: { pixelSize: special ? 10 : 5, color: bay ? palette.amber : palette.teal, outlineColor: C.Color.BLACK, outlineWidth: 2 },
-      label: { text: point.name || point.id, show: props.showLabels && special, font: '12px sans-serif', fillColor: C.Color.fromCssColorString('#bfd2df'), pixelOffset: new C.Cartesian2(0, 16), style: C.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 3, outlineColor: C.Color.fromCssColorString('#101c2a'), distanceDisplayCondition: new C.DistanceDisplayCondition(0, 15000) },
+      point: { pixelSize: special ? 10 : 5, color: bay ? palette.amber : palette.teal, outlineColor: paper, outlineWidth: 2 },
+      label: { text: point.name || point.id, show: props.showLabels && special, font: '12px sans-serif', fillColor: C.Color.fromCssColorString('#3d4b5a'), pixelOffset: new C.Cartesian2(0, 16), style: C.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 3, outlineColor: paper, distanceDisplayCondition: new C.DistanceDisplayCondition(0, 15000) },
     }, topologyIds);
   });
   return true;
@@ -143,15 +145,15 @@ function draw() {
     state.aircraft.forEach(aircraft => {
       const selected = aircraft.id === props.selectedId;
       const emergency = ['emergency', 'diverting', 'fault'].includes(aircraft.status);
-      const color = emergency ? palette.amber : selected ? C.Color.WHITE : palette.teal;
+      const color = emergency ? palette.amber : selected ? ink : palette.teal;
       upsert(`aircraft-${aircraft.id}`, { position: world(aircraft.position),
-        point: { pixelSize: selected ? 12 : 7, color, outlineColor: C.Color.fromCssColorString('#0c1725'), outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
-        label: { text: `${aircraft.id}  ${aircraft.position.z.toFixed(0)} m`, show: selected, font: '13px monospace', fillColor: C.Color.WHITE, showBackground: true, backgroundColor: C.Color.fromCssColorString('#12283de6'), pixelOffset: new C.Cartesian2(0, -24), disableDepthTestDistance: Number.POSITIVE_INFINITY },
+        point: { pixelSize: selected ? 12 : 7, color, outlineColor: paper, outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+        label: { text: `${aircraft.id}  ${aircraft.position.z.toFixed(0)} m`, show: selected, font: '13px sans-serif', fillColor: ink, showBackground: true, backgroundColor: C.Color.fromCssColorString('#ffffffe6'), horizontalOrigin: C.HorizontalOrigin.CENTER, pixelOffset: new C.Cartesian2(0, -24), disableDepthTestDistance: Number.POSITIVE_INFINITY },
       }, used);
       const trail = aircraft.trajectory?.slice(-120) || [];
       if (props.showTracks && trail.length > 1) {
         const id = `track-${aircraft.id}`;
-        if (updateTracks || !viewer?.entities.getById(id)) upsert(id, { polyline: { positions: trail.map(world), width: selected ? 2 : 1, material: color.withAlpha(selected ? 0.9 : 0.25) } }, used);
+        if (updateTracks || !viewer?.entities.getById(id)) upsert(id, { polyline: { positions: trail.map(world), width: selected ? 2 : 1, material: color.withAlpha(selected ? 0.9 : 0.32) } }, used);
         else used.add(id);
       }
       if (selected && aircraft.flight_plan && aircraft.flight_plan.length > 1) upsert(`plan-${aircraft.id}`, { polyline: { positions: aircraft.flight_plan.map(world), width: 4, material: new C.PolylineDashMaterialProperty({ color: palette.amber }) } }, used);
@@ -159,16 +161,16 @@ function draw() {
     state.restrictions.filter(r => r.active).forEach(restriction => upsert(`restriction-${restriction.id}`, { polygon: {
       hierarchy: new C.PolygonHierarchy(restriction.polygon.points.map(p => world({ ...p, z: restriction.min_altitude }))),
       perPositionHeight: true, extrudedHeight: state.environment!.origin.altitude + restriction.max_altitude,
-      material: palette.red.withAlpha(0.16), outline: true, outlineColor: palette.red.withAlpha(0.6),
+      material: palette.red.withAlpha(0.1), outline: true, outlineColor: palette.red.withAlpha(0.55),
     } }, used));
     state.weather.forEach(weather => upsert(`weather-${weather.id}`, { polygon: {
       hierarchy: new C.PolygonHierarchy(weather.affected_area.points.map(p => world({ ...p, z: 1 }))),
       perPositionHeight: true, extrudedHeight: state.environment!.origin.altitude + 350,
-      material: (weather.precipitation === 'thunderstorm' ? palette.amber : C.Color.CORNFLOWERBLUE).withAlpha(0.12),
-      outline: true, outlineColor: palette.amber.withAlpha(0.35),
+      material: (weather.precipitation === 'thunderstorm' ? palette.amber : C.Color.fromCssColorString('#3b82f6')).withAlpha(0.14),
+      outline: true, outlineColor: palette.amber.withAlpha(0.45),
     } }, used));
     state.conflicts.forEach(conflict => upsert(`conflict-${conflict.aircraft_a}-${conflict.aircraft_b}`, {
-      position: world(conflict.conflict_position), point: { pixelSize: 20, color: palette.red.withAlpha(0.45), outlineColor: palette.red, outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      position: world(conflict.conflict_position), point: { pixelSize: 20, color: palette.red.withAlpha(0.3), outlineColor: palette.red, outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
     }, used));
     dynamicIds.forEach(id => { if (!used.has(id)) viewer?.entities.removeById(id); });
     dynamicIds.clear(); used.forEach(id => dynamicIds.add(id));
@@ -196,8 +198,8 @@ onMounted(() => {
       animation: false, timeline: false, geocoder: false, homeButton: false, sceneModePicker: false, baseLayerPicker: false,
       navigationHelpButton: false, fullscreenButton: false, selectionIndicator: false, infoBox: false,
       skyBox: false, skyAtmosphere: false, requestRenderMode: true, maximumRenderTimeChange: Number.POSITIVE_INFINITY });
-    viewer.scene.backgroundColor = C.Color.fromCssColorString('#0c1725');
-    viewer.scene.globe.baseColor = C.Color.fromCssColorString('#101e2a');
+    viewer.scene.backgroundColor = C.Color.fromCssColorString('#eef1f5');
+    viewer.scene.globe.baseColor = C.Color.fromCssColorString('#eef1f5');
     viewer.scene.globe.showGroundAtmosphere = false;
     viewer.scene.fog.enabled = false;
     viewer.scene.screenSpaceCameraController.minimumZoomDistance = 80;

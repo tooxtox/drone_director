@@ -1,4 +1,4 @@
-param([int]$BackendPort = 8011, [int]$FrontendPort = 5173)
+﻿param([int]$BackendPort = 8011, [int]$FrontendPort = 5173)
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $python = Join-Path $projectRoot ".venv-runtime/Scripts/python.exe"

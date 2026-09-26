@@ -1,4 +1,4 @@
-# 一键启动天枢智航后端（Windows PowerShell）
+﻿# 一键启动天枢智航后端（Windows PowerShell）
 # 用法: .\scripts\run_backend.ps1
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot

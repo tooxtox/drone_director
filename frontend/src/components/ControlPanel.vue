@@ -73,13 +73,13 @@ async function previewScenario(item: (typeof scenarios)[number]) {
 
 <template>
   <aside class="control-panel" aria-label="运行指标与仿真控制">
-    <div class="panel-heading"><span>演示驾驶台</span><span class="small-code">LIVE OPERATIONS</span></div>
+    <div class="panel-heading"><span>演示驾驶台</span></div>
     <section class="control-section playback-section">
       <div class="section-title"><h2>仿真进程</h2><span class="status-pill" :class="{ active: running }">{{ running ? '运行中' : '已暂停' }}</span></div>
       <div class="sim-clock"><span>仿真时间</span><strong>{{ formatTime(snapshot?.simulation.time_s ?? 0) }}</strong><small>{{ snapshot?.simulation.speed ?? 1 }}×</small></div>
       <div class="button-row">
-        <button v-if="!running" class="primary" :disabled="busy || !snapshot?.aircraft.length" @click="command('/simulation/start')"><span aria-hidden="true">▶</span> 启动仿真</button>
-        <button v-else class="primary" :disabled="busy" @click="command('/simulation/pause')"><span aria-hidden="true">Ⅱ</span> 暂停</button>
+        <button v-if="!running" class="primary" :disabled="busy || !snapshot?.aircraft.length" @click="command('/simulation/start')"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5 19 12 7 19.5Z" /></svg>启动仿真</button>
+        <button v-else class="primary" :disabled="busy" @click="command('/simulation/pause')"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4.5" width="4" height="15" rx="1" /><rect x="14" y="4.5" width="4" height="15" rx="1" /></svg>暂停</button>
         <button :disabled="busy || running || !snapshot?.aircraft.length" @click="command('/simulation/step', { steps: 1 })">单步推进</button>
       </div>
       <div class="speed-row"><label for="simulation-speed">时间倍率</label><select id="simulation-speed" v-model.number="speed" :disabled="busy" @change="command('/simulation/speed', { speed })"><option :value="1">1× 实时</option><option :value="5">5×</option><option :value="10">10×</option><option :value="20">20×</option><option :value="50">50×</option></select></div>
@@ -87,7 +87,7 @@ async function previewScenario(item: (typeof scenarios)[number]) {
       <p class="control-note">{{ !snapshot?.aircraft.length ? '可先选择下方单项场景，直接查看事件。' : selectedScenario === 'full' ? (snapshot.simulation.demo_complete ? '四类扰动已执行，任务仍在继续调度。' : `完整演示阶段 ${snapshot.simulation.demo_stage} / 4`) : (snapshot.simulation.demo_complete ? '本场景已结束，可检查结果。' : snapshot.simulation.demo_stage ? '事件已触发。点击启动，观察后续处置。' : '场景已生成，点击启动。') }}</p>
     </section>
     <section class="control-section scenario-section">
-      <div class="section-title"><h2>单项事件场景</h2><span class="small-code">5 SCENARIOS</span></div>
+      <div class="section-title"><h2>单项事件场景</h2></div>
       <p class="scenario-intro">点击后停在事件发生的第一秒；启动仿真，观察后续行动。</p>
       <div class="scenario-grid">
         <button v-for="item in scenarios" :key="item.id" class="scenario-card" :class="{ selected: selectedScenario === item.id && !!snapshot?.aircraft.length }"
@@ -97,14 +97,14 @@ async function previewScenario(item: (typeof scenarios)[number]) {
       </div>
       <p class="control-note">切换会重置当前运行；需要保留结果时先导出报告。</p>
     </section>
-    <div class="metrics-heading"><h2>运行指标</h2><span class="small-code">ACTUAL DATA</span></div>
+    <div class="metrics-heading"><h2>运行指标</h2></div>
     <div class="metric-grid">
       <div v-for="(item, index) in metrics" :key="String(item[0])" class="metric" :class="{ 'primary-metric': index < 3, caution: [2, 4, 5].includes(index) && Number(item[1]) > 0 }">
         <span>{{ item[0] }}</span><strong>{{ item[1] ?? '—' }}<small>{{ item[2] }}</small></strong>
       </div>
     </div>
     <section class="control-section">
-      <div class="section-title"><h2>动态事件注入</h2><span class="small-code">LIVE INPUT</span></div>
+      <div class="section-title"><h2>动态事件注入</h2></div>
       <label class="field-label" for="event-type">事件类型</label>
       <select id="event-type" v-model="type" :disabled="busy"><option value="event_route_congestion">航路拥堵 · 收缩容量</option><option value="event_weather">雷暴天气 · 东部扰动</option><option value="event_aircraft_failure">飞行器故障 · 应急备降</option><option value="event_airspace_closure">临时空域管制 · 封闭区域</option></select>
       <div v-if="type === 'event_route_congestion'" class="event-fields">
@@ -113,10 +113,10 @@ async function previewScenario(item: (typeof scenarios)[number]) {
       </div>
       <label v-else-if="type === 'event_aircraft_failure'" class="field-label">目标飞行器<select v-model="aircraftId" :disabled="busy"><option v-if="!activeAircraft.length" value="">暂无可注入故障的飞行器</option><option v-for="aircraft in activeAircraft" :key="aircraft.id" :value="aircraft.id">{{ aircraft.id }} · {{ statusLabels[aircraft.status] || aircraft.status }}</option></select></label>
       <label v-else class="field-label">影响区域<select v-model="area" :disabled="busy"><option value="east">城市东部</option><option value="center">城市中心</option></select></label>
-      <button class="wide event-button" :disabled="!canInject" @click="inject">注入事件并自动处置 <span aria-hidden="true">↗</span></button>
+      <button class="wide event-button" :disabled="!canInject" @click="inject">注入事件并自动处置<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg></button>
     </section>
     <section class="control-section fleet-section">
-      <div class="section-title"><h2>飞行器详情</h2><span class="small-code">INSPECT</span></div>
+      <div class="section-title"><h2>飞行器详情</h2></div>
       <label class="sr-only" for="aircraft-select">查看飞行器</label>
       <select id="aircraft-select" v-model="selectedAircraftId"><option value="">在场景中选择，或按编号查找</option><option v-for="aircraft in snapshot?.aircraft" :key="aircraft.id" :value="aircraft.id">{{ aircraft.id }} · {{ statusLabels[aircraft.status] || aircraft.status }}</option></select>
       <div v-if="selectedAircraft" class="aircraft-details">
