@@ -14,9 +14,9 @@ from core.models import Building, CityConfig, Waypoint
 from core.models.geometry import Polygon2D, Position2D
 from simulation.environment.city import CityEnvironment
 
+from simulation.environment.ground import BLOCK_PERIOD as _BLOCK_PERIOD, STREET_WIDTH as _STREET_WIDTH
+
 # 街区生成默认参数（米）
-_BLOCK_PERIOD = 200.0      # 街区周期（含街道）
-_STREET_WIDTH = 40.0      # 街道宽度
 _VERTIPORT_CLEARANCE = 70.0  # 起降点周边不放建筑的净空半径
 _MAX_BUILDING_HEIGHT = 100.0  # 建筑限高，保证 120m 主走廊安全
 

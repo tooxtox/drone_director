@@ -1,6 +1,7 @@
 """Closed-loop contracts: scheduling, events, persistence and the live protocol."""
 
 import random
+from collections import deque
 from itertools import combinations
 
 import pytest
@@ -52,6 +53,42 @@ def test_unresolved_immediate_conflict_stops_the_entire_requested_batch(engine):
     assert engine.conflicts
 
 
+def test_realized_conflict_restores_motion_and_full_trails(engine, monkeypatch):
+    ids = ("UAV-001", "UAV-002")
+    engine.demo_enabled = False
+    engine._last_retry = engine.time_s
+    engine.aircraft = {key: engine.aircraft[key] for key in ids}
+    engine.missions = {key: mission for key, mission in engine.missions.items()
+                       if mission.aircraft_id in ids}
+    for aircraft, start_x, target_x in zip(engine.aircraft.values(), (100, 140), (130, 110)):
+        aircraft.position = Position3D(x=start_x, y=100, z=150)
+        engine.plans[aircraft.id] = FlightPlan(
+            positions=[aircraft.position.model_copy(), Position3D(x=target_x, y=100, z=150)],
+            node_ids=[aircraft.id, f"target-{aircraft.id}"], route_ids=[None], speed_mps=15)
+    engine.plans = {key: engine.plans[key] for key in ids}
+    engine.distances = {key: 5.0 for key in ids}
+    engine.trails = {key: deque([{"x": i, "y": 100, "z": 150} for i in range(180)], maxlen=180)
+                     for key in ids}
+    engine.running = True
+    before_aircraft = {key: aircraft.model_dump(mode="json") for key, aircraft in engine.aircraft.items()}
+    before_missions = {key: mission.model_dump(mode="json") for key, mission in engine.missions.items()}
+    before_plans = {key: plan.to_dict() for key, plan in engine.plans.items()}
+    before_distances = engine.distances.copy()
+    before_trails = {key: list(trail) for key, trail in engine.trails.items()}
+    monkeypatch.setattr("simulation.engine.safety.manage_conflicts", lambda _: True)
+
+    engine.step(1)
+
+    assert engine.conflicts and 0 < engine.conflicts[0].conflict_time < 1
+    assert not engine.running
+    assert {key: aircraft.model_dump(mode="json") for key, aircraft in engine.aircraft.items()} == before_aircraft
+    assert {key: mission.model_dump(mode="json") for key, mission in engine.missions.items()} == before_missions
+    assert {key: plan.to_dict() for key, plan in engine.plans.items()} == before_plans
+    assert engine.distances == before_distances
+    assert {key: list(trail) for key, trail in engine.trails.items()} == before_trails
+    assert all(trail.maxlen == 180 for trail in engine.trails.values())
+
+
 def test_injected_closure_checks_separation_before_next_tick(engine):
     engine.demo_enabled = False
     engine.running = True
@@ -89,7 +126,11 @@ def test_congestion_is_a_real_capacity_change_without_teleport(engine):
 
 @pytest.mark.parametrize("event_type", [EventType.WEATHER, EventType.AIRSPACE_CLOSURE])
 def test_area_event_replans_or_holds_every_affected_aircraft(engine, event_type):
-    area = rectangle_polygon(2900, 240, 300, 150)
+    # Place the disturbance on a real future leg, independent of the demo layout.
+    plan = engine.plans["UAV-001"]
+    left, right = max(zip(plan.positions, plan.positions[1:]),
+                      key=lambda pair: pair[0].horizontal_distance_to(pair[1]))
+    area = rectangle_polygon((left.x+right.x)/2, (left.y+right.y)/2, 100, 80)
     payload = ({"affected_area": area.model_dump(), "precipitation": "thunderstorm"}
                if event_type == EventType.WEATHER else
                {"polygon": area.model_dump(), "min_altitude": 0, "max_altitude": 300})
@@ -237,16 +278,35 @@ def test_api_controls_and_websocket_share_the_same_state(client):
     assert client.post("/api/simulation/start").status_code == 409
     assert client.post("/api/simulation/speed", json={"speed": 0}).status_code == 422
     client.post("/api/simulation/demo", json={"aircraft_count": 4})
+    client.app.state.engine.history.extend({
+        "time_s": i, "conflicts": 0, "route_utilization": 0,
+        "average_delay_s": 0, "total_distance_m": 0,
+    } for i in range(260))
+    full = client.get("/api/simulation/state").json()
+    assert len(full["history"]) == 260 and len(full["missions"]) == 4
+    assert len(client.get("/api/simulation/report").json()["history"]) == 260
     with client.websocket_connect("/api/ws") as ws:
         first = ws.receive_json()
         assert first["sequence"] == 1 and first["data"]["environment"]["buildings"]
+        assert first["data"]["waypoints"] == full["waypoints"]
+        assert first["data"]["history"] == full["history"][-240:]
+        assert "missions" not in first["data"]
         stepped = client.post("/api/simulation/step", json={"steps": 2}).json()
         for _ in range(10):
             message = ws.receive_json()
             if message["data"]["simulation"]["time_s"] == 2:
                 break
         assert message["data"]["metrics"] == stepped["metrics"]
-        assert "environment" not in message["data"]
+        assert message["data"]["history"] == stepped["history"][-240:]
+        assert "environment" not in message["data"] and "waypoints" not in message["data"]
+        assert "missions" not in message["data"]
+        replaced = client.post("/api/simulation/demo", json={"aircraft_count": 6}).json()
+        for _ in range(10):
+            message = ws.receive_json()
+            if message["data"]["environment_version"] == replaced["environment_version"]:
+                break
+        assert message["data"]["environment"] == replaced["environment"]
+        assert message["data"]["waypoints"] == replaced["waypoints"]
     assert client.post("/api/simulation/start").status_code == 200
     assert client.post("/api/simulation/step", json={"steps": 1}).status_code == 409
     assert client.post("/api/simulation/demo", json={"aircraft_count": 4}).status_code == 409

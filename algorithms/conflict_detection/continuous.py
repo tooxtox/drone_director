@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from itertools import combinations
 
 from core.models.geometry import Position3D
 
@@ -115,22 +114,29 @@ def detect_conflicts(
                          for axis in ("x", "y", "z"))
               for key, path in trajectories.items() if path}
     conflicts = []
-    # ponytail: O(n²) broad phase; a spatial index is the next step beyond this fleet size.
-    for aircraft_a, aircraft_b in combinations(sorted(trajectories), 2):
-        if aircraft_a not in bounds or aircraft_b not in bounds:
-            continue
-        if any(a[0] > b[1] + margin + _EPS or b[0] > a[1] + margin + _EPS
-               for a, b, margin in zip(bounds[aircraft_a], bounds[aircraft_b],
-                                       (limits.horizontal_m, limits.horizontal_m, limits.vertical_m))):
-            continue
-        overlap = _first_overlap(trajectories[aircraft_a], trajectories[aircraft_b], limits, now)
-        if overlap is not None:
-            time, position = overlap
-            conflicts.append(Conflict(
-                aircraft_a=aircraft_a, aircraft_b=aircraft_b,
-                conflict_time=time, conflict_position=position,
-                severity="critical" if time <= now + _EPS else "warning",
-            ))
+    # Sorted swept bounds let distant pairs stop at the first x gap.
+    ordered = sorted(bounds, key=lambda aircraft_id: bounds[aircraft_id][0][0])
+    for index, first in enumerate(ordered):
+        left = bounds[first]
+        for other_index in range(index + 1, len(ordered)):
+            second = ordered[other_index]
+            right = bounds[second]
+            if right[0][0] > left[0][1] + limits.horizontal_m + _EPS:
+                break
+            if (left[1][0] > right[1][1] + limits.horizontal_m + _EPS
+                    or right[1][0] > left[1][1] + limits.horizontal_m + _EPS
+                    or left[2][0] > right[2][1] + limits.vertical_m + _EPS
+                    or right[2][0] > left[2][1] + limits.vertical_m + _EPS):
+                continue
+            aircraft_a, aircraft_b = (first, second) if first < second else (second, first)
+            overlap = _first_overlap(trajectories[aircraft_a], trajectories[aircraft_b], limits, now)
+            if overlap is not None:
+                time, position = overlap
+                conflicts.append(Conflict(
+                    aircraft_a=aircraft_a, aircraft_b=aircraft_b,
+                    conflict_time=time, conflict_position=position,
+                    severity="critical" if time <= now + _EPS else "warning",
+                ))
     return sorted(conflicts, key=lambda conflict: (
         conflict.conflict_time, conflict.aircraft_a, conflict.aircraft_b,
     ))

@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { eventLabels, formatTime, type SimulationEvent } from '../types/simulation';
 const props = defineProps<{ events: SimulationEvent[] }>();
+const emit = defineEmits<{ inspect: [id:string] }>();
 const newest = computed(() => [...props.events].reverse());
 function outcome(event: SimulationEvent): string {
   const evacuating = event.result.evacuating_aircraft;
@@ -20,7 +21,11 @@ function outcome(event: SimulationEvent): string {
         <span class="event-description">{{ event.description || event.id }}</span>
         <span class="event-outcome">{{ outcome(event) }}</span>
       </summary>
-      <div class="event-detail"><span>处理耗时 {{ event.processing_ms?.toFixed(2) ?? '—' }} ms · {{ event.id }}</span><details class="event-raw"><summary>查看原始处理数据</summary><pre>{{ JSON.stringify(event.result, null, 2) }}</pre></details></div>
+      <div class="event-detail"><span>处理耗时 {{ event.processing_ms?.toFixed(2) ?? '—' }} ms · {{ event.id }}</span><button v-if="event.result.presentation" class="inspect-change" @click="emit('inspect',event.id)">在地图中对比这次变化 ↗</button><details class="event-raw"><summary>查看原始处理数据</summary><pre>{{ JSON.stringify(event.result, null, 2) }}</pre></details></div>
     </details>
   </div>
 </template>
+
+<style scoped>
+.inspect-change{display:block;margin:8px 0;padding:6px 9px;color:#86e8d2;border:1px solid #61e9cc44;background:#54eed20c;font-size:10px;border-radius:5px}
+</style>

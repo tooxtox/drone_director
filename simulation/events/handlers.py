@@ -8,6 +8,7 @@ from algorithms.emergency.diversion import divert_aircraft
 from core.models import AirspaceRestriction, EventType, RouteStatus, Weather
 from simulation.environment.builder import rectangle_polygon
 from simulation.environment.route_network import RouteNetwork
+from simulation.events.presentation import capture_flights, decision_evidence
 
 
 class CongestionPayload(BaseModel):
@@ -31,6 +32,7 @@ def default_area(engine):
 
 def process_event(engine, event):
     started = perf_counter()
+    before = []
     if any(item.id == event.id for item in engine.events) or engine.registry.events.exists(event.id):
         raise ValueError(f"事件 {event.id} 已存在")
     # Parse every trusted value before writing any model or graph state.
@@ -43,6 +45,8 @@ def process_event(engine, event):
         engine.weather[weather.id] = weather
         area = weather.affected_area
         affected = affected_aircraft(engine, lambda a, b: area.intersects_segment(a.xy, b.xy))
+        inside = [key for key in affected if area.contains(engine.aircraft[key].position.xy)]
+        before = capture_flights(engine, [*inside, *affected])
         changed = mark_routes(engine, lambda a, b: area.intersects_segment(a.xy, b.xy), RouteStatus.RESTRICTED)
         result = replan_affected(engine, affected)
         result.update(weather_id=weather.id, affected_routes=changed)
@@ -54,6 +58,8 @@ def process_event(engine, event):
         engine.restrictions[restriction.id] = restriction
         intersects = lambda a, b: restriction.active and restriction.polygon.intersects_prism(a, b, restriction.min_altitude, restriction.max_altitude)
         affected = affected_aircraft(engine, intersects)
+        inside = [key for key in affected if intersects(engine.aircraft[key].position, engine.aircraft[key].position)]
+        before = capture_flights(engine, [*inside, *affected])
         changed = mark_routes(engine, intersects, RouteStatus.RESTRICTED)
         result = replan_affected(engine, affected)
         result.update(restriction_id=restriction.id, affected_routes=changed)
@@ -68,6 +74,7 @@ def process_event(engine, event):
         engine.environment.network = RouteNetwork.build(engine.waypoints.values(), engine.routes.values())
         engine.environment.version += 1
         affected = [aircraft_id for aircraft_id, plan in engine.plans.items() if route.id in plan.route_ids[plan.cursor - 1:]]
+        before = capture_flights(engine, affected)
         result = replan_affected(engine, affected)
         result.update(route_id=route.id, old_capacity=old_capacity, capacity=route.capacity,
                       observed_flow=engine.occupancy.get(route.id, 0))
@@ -75,6 +82,7 @@ def process_event(engine, event):
         parameters = FailurePayload.model_validate(event.payload)
         if event.related_id not in engine.aircraft:
             raise KeyError(event.related_id or "missing aircraft id")
+        before = capture_flights(engine, [event.related_id])
         result = divert_aircraft(engine, event.related_id, parameters.range_derating)
     elif event.type in (EventType.INFO, EventType.CONFLICT):
         result = {"success": True, "recorded": True}
@@ -88,6 +96,8 @@ def process_event(engine, event):
         safe_to_advance = manage_conflicts(engine)
         result["residual_conflicts"] = len(engine.conflicts)
         result["paused_for_safety"] = not safe_to_advance
+    if before:
+        result["presentation"] = decision_evidence(engine, before)
     event.result = result
     event.processing_ms = (perf_counter() - started) * 1000
     engine._record(event)

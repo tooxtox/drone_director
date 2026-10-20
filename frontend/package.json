@@ -4,12 +4,27 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "node scripts/cesium-assets.mjs",
     "dev": "vite --host 127.0.0.1",
-    "prebuild": "node scripts/cesium-assets.mjs",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "test:scene-events": "node scripts/test-scene-events.mjs",
+    "test:flight-pose": "node scripts/test-flight-pose.mjs",
+    "test:demo-story": "node scripts/test-demo-story.mjs",
+    "test:demo-camera": "node scripts/test-demo-camera.mjs",
+    "test:motion": "node scripts/test-motion-playback.mjs",
+    "test:landing-sites": "node scripts/test-landing-sites.mjs"
   },
-  "dependencies": {"vue": "^3.5.0", "cesium": "^1.130.0", "echarts": "^6.0.0"},
-  "devDependencies": {"@vitejs/plugin-vue": "^6.0.0", "vite": "^7.0.0", "typescript": "~5.9.0", "vue-tsc": "^3.0.0", "@types/node": "^24.0.0"}
+  "dependencies": {
+    "vue": "^3.5.0",
+    "echarts": "^6.0.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "vite": "^7.0.0",
+    "typescript": "~5.9.0",
+    "vue-tsc": "^3.0.0",
+    "@types/node": "^24.0.0",
+    "@types/three": "^0.180.0"
+  }
 }

@@ -84,7 +84,9 @@ class FlightPlan:
             )
             used = distance * (1 + 4 * climb_fraction)
             aircraft.battery = max(0.0, aircraft.battery - used / aircraft.max_range_m)
-            aircraft.heading = math.degrees(math.atan2(target.x - start.x, target.y - start.y)) % 360
+            # Vertical takeoff/landing has no new horizontal bearing.
+            if math.hypot(target.x - start.x, target.y - start.y) > 1e-8:
+                aircraft.heading = math.degrees(math.atan2(target.x - start.x, target.y - start.y)) % 360
             aircraft.speed = speed if distance > 0 else 0.0
             remaining -= distance / speed
             if trace is not None and dt-remaining > trace[-1][0]+1e-9:

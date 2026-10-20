@@ -1,12 +1,10 @@
 """Seeded initial conditions and timed disturbances; all outcomes are simulated."""
 
-import math
 import random
 
-from core.models import (Aircraft, AirRoute, CityConfig, Event, EventType, GeoPoint,
-                         Mission, Position3D, Severity, Waypoint, WaypointType)
+from core.models import Event, EventType, Position3D, Severity, WaypointType
 from simulation.aircraft.flight import FlightPlan
-from simulation.environment.builder import rectangle_polygon
+from simulation.environment.builder import CityBuilder, rectangle_polygon
 
 
 SCENARIOS = {"full", "congestion", "weather", "closure", "failure", "conflict"}
@@ -21,56 +19,19 @@ def prepare_demo(engine, aircraft_count=100, seed=42, scenario="full"):
     if engine.running:
         raise RuntimeError("请先暂停再生成演示场景")
     rng = random.Random(seed)
-    rows = max(2, math.ceil(aircraft_count/4))
-    config = CityConfig(name="天枢试验城区", origin=GeoPoint(latitude=30.5728, longitude=104.0668),
-        min_x=0, min_y=0, max_x=4000, max_y=max(1200, 400+rows*150),
-        grid_resolution=40, building_seed=seed)
-    waypoints, routes, aircraft, missions = {}, [], [], []
-
-    def point(key, x, y, z, kind=WaypointType.WAYPOINT, capacity=8):
-        waypoints[key] = Waypoint(id=key, name=key, position=Position3D(x=x,y=y,z=z),
-                                 type=kind, capacity=capacity, risk_level=0.1)
-        return key
-
-    def edge(a,b):
-        routes.append(AirRoute(id=f"R-{a}-{b}", name=f"{a} ↔ {b}", start=a, end=b,
-            waypoint_ids=[a,b], distance=waypoints[a].position.distance_to(waypoints[b].position),
-            capacity=8, risk_level=0.1))
-
-    xs = [200,800,1400,2000,3600]
-    for row in range(rows):
-        y = 200+row*150
-        for layer,z in enumerate((150,210)):
-            for col,x in enumerate(xs):
-                key=point(f"L{layer}Y{row}X{col}",x,y,z)
-                if col: edge(f"L{layer}Y{row}X{col-1}",key)
-                if row: edge(f"L{layer}Y{row-1}X{col}",key)
-                if layer: edge(f"L0Y{row}X{col}",key)
-        for offset in range(4):
-            index=row*4+offset
-            if index>=aircraft_count: break
-            destination_y=y+(offset-1.5)*34
-            approach=point(f"AP{index}",3800,destination_y,150)
-            destination=point(f"PAD{index}",3800,destination_y,0,WaypointType.VERTIPORT,1)
-            edge(f"L0Y{row}X4",approach)
-            edge(approach,destination)
-            origin=waypoints[f"L0Y{row}X{offset}"].position
-            drone=Aircraft(id=f"UAV-{index+1:03d}",name=f"天枢 {index+1:03d}",position=origin.model_copy(),
-                           battery=round(rng.uniform(0.8,1.0),3),priority=rng.randint(0,8))
-            aircraft.append(drone)
-            missions.append(Mission(id=f"MISSION-{index+1:03d}",aircraft_id=drone.id,
-                origin=origin.model_copy(),destination=waypoints[destination].position.model_copy(),priority=drone.priority))
-        if row%4==0:
-            approach=point(f"EB-APP-{row}",2200,y+70,150)
-            bay=point(f"EB-{row}",2200,y+70,0,WaypointType.EMERGENCY_BAY,1)
-            edge(f"L0Y{row}X3",approach)
-            edge(approach,bay)
+    from simulation.events.traffic import build_city_traffic
+    config, waypoints, routes, aircraft, missions = build_city_traffic(
+        aircraft_count, rng, center_lanes=scenario != "full")
+    config.building_seed = seed
+    # Cruise points overfly the roofs. Reserve ground clearance for terminals.
+    buildings = CityBuilder.generate_buildings(config, [w for w in waypoints.values()
+        if w.type in (WaypointType.VERTIPORT, WaypointType.EMERGENCY_BAY)])
     staged=type(engine.environment)()
     with engine.registry.transaction():
         engine.registry.reset()
         for name,items in (("waypoints",waypoints.values()),("routes",routes),("aircraft",aircraft),("missions",missions)):
             for item in items: getattr(engine.registry,name).add(item)
-        staged.apply_seed(config,None,engine.registry)
+        staged.apply_seed(config,buildings,engine.registry)
         engine.registry.set_metadata("environment", {"city_config":config.model_dump(mode="json"),
             "buildings":[b.model_dump(mode="json") for b in staged.city.buildings]})
     engine.environment.install_from(staged)
@@ -78,8 +39,10 @@ def prepare_demo(engine, aircraft_count=100, seed=42, scenario="full"):
     engine.demo_enabled=True
     engine.demo_scenario=scenario
     engine._schedule()
+    from simulation.events.camera import build_camera_cue
+    camera_cue = build_camera_cue(engine)
     engine._record(Event(type=EventType.INFO,description=f"随机种子 {seed}：已生成 {aircraft_count} 架飞行器及任务，场景 {scenario}",
-                         result={"seed":seed,"aircraft_count":aircraft_count,"scenario":scenario}))
+                         result={"seed":seed,"aircraft_count":aircraft_count,"scenario":scenario,"traffic_pattern":"four_way","camera_cue":camera_cue}))
 
 
 def advance_demo(engine):
@@ -160,32 +123,64 @@ def _advance_single(engine):
         engine.demo_stage = 1
     if engine.demo_stage != 1:
         return
-    observed = (scenario == "failure" and any(e.type == EventType.EMERGENCY_LANDING for e in engine.events)
-                or scenario == "conflict" and engine.resolved_conflicts > 0)
-    ready = engine.time_s >= trigger + 12 and observed
     if scenario in ("congestion", "weather", "closure"):
-        ready = engine.time_s >= trigger + 55
-    if ready or engine.time_s >= 180:
+        observed = True
+        ready = engine.time_s >= trigger + 80
+    else:
+        result_type = EventType.EMERGENCY_LANDING if scenario == "failure" else EventType.CONFLICT
+        result = next((e for e in engine.events if e.type == result_type
+                       and e.simulation_time >= trigger), None)
+        observed = result is not None
+        ready = observed and engine.time_s >= result.simulation_time + 30
+    if ready or (not observed and engine.time_s >= 220):
         engine.demo_complete = True
         engine.running = False
         engine._record(Event(type=EventType.INFO, description=f"单项场景 {scenario} 已停止；结果来自实际仿真",
-            result={"scenario": scenario, "observed": bool(observed or scenario in ("congestion", "weather", "closure")),
+            result={"scenario": scenario, "observed": observed,
                     "resolved_conflicts": engine.resolved_conflicts,
                     "emergency_landings": sum(e.type == EventType.EMERGENCY_LANDING for e in engine.events)}))
         engine.checkpoint()
         return False
 
 
+def _congestion_route(engine):
+    return max(engine.routes.values(), key=lambda r: (engine.occupancy.get(r.id, 0), r.id))
+
+
 def _inject_congestion(engine):
-    route = max(engine.routes.values(), key=lambda r: (engine.occupancy.get(r.id, 0), r.id))
+    route = _congestion_route(engine)
     return engine.inject_event(Event(type=EventType.ROUTE_CONGESTION, related_id=route.id,
         severity=Severity.WARNING, description="演示事件：航路容量下降，重新分配流量",
         payload={"capacity": 1}))
 
 
-def _inject_weather(engine, center_x=2900):
+def _area_for_scenario(engine, center_x):
+    """Place a reproducible disturbance on real eastern traffic in single demos."""
     cfg = engine.environment.city.config
-    area = rectangle_polygon(center_x, cfg.height*0.55, 450, min(700, cfg.height*0.3))
+    height = min(700, cfg.height * 0.3)
+    center_y = cfg.height * 0.55
+    if engine.demo_scenario in ("weather", "closure"):
+        active = [a for a in engine.aircraft.values() if 120 <= a.position.z <= 230
+                  and a.id in engine.plans and not engine.plans[a.id].complete]
+        pairs = [(a, b) for index, a in enumerate(active) for b in active[index+1:]
+                 if abs(a.position.z-b.position.z) < 1 and abs(a.heading-b.heading) < 1
+                 and a.position.horizontal_distance_to(b.position) <= height * 0.6]
+        if pairs:
+            a, b = max(pairs, key=lambda pair: ((pair[0].position.x+pair[1].position.x)/2,
+                                              -pair[0].position.distance_to(pair[1].position),
+                                              pair[0].id, pair[1].id))
+            center_x = (a.position.x+b.position.x)/2
+            center_y = (a.position.y+b.position.y)/2
+        elif active:
+            a = max(active, key=lambda a: (a.position.x, a.id))
+            center_x, center_y = a.position.x, a.position.y
+    center_x = max(cfg.min_x+225, min(cfg.max_x-225, center_x))
+    center_y = max(cfg.min_y+height/2, min(cfg.max_y-height/2, center_y))
+    return rectangle_polygon(center_x, center_y, 450, height)
+
+
+def _inject_weather(engine, center_x=2900):
+    area = _area_for_scenario(engine, center_x)
     event = engine.inject_event(Event(type=EventType.WEATHER, severity=Severity.CRITICAL,
         description="演示事件：东部雷暴，动态更新禁入区域并重规划",
         payload={"affected_area":area.model_dump(), "wind_speed":22,
@@ -195,31 +190,41 @@ def _inject_weather(engine, center_x=2900):
 
 
 def _inject_closure(engine):
-    cfg = engine.environment.city.config
-    area = rectangle_polygon(2500, cfg.height*0.55, 450, min(700, cfg.height*0.3))
+    area = _area_for_scenario(engine, 2500)
     return engine.inject_event(Event(type=EventType.AIRSPACE_CLOSURE, severity=Severity.WARNING,
         description="演示事件：城市东部临时空域管制",
         payload={"polygon":area.model_dump(), "min_altitude":120,
                  "max_altitude":230, "reason":"临时空域管制演示"}))
 
 
-def _inject_failure(engine):
+def _failure_target(engine):
     available=[a for a in engine.aircraft.values() if a.id in engine.plans and not engine.plans[a.id].complete]
-    if not available:
+    bays=[w for w in engine.waypoints.values() if w.type==WaypointType.EMERGENCY_BAY]
+    return min(available,key=lambda a:min(a.position.distance_to(b.position) for b in bays)) if available and bays else None
+
+
+def _inject_failure(engine):
+    victim = _failure_target(engine)
+    if victim is None:
         engine.alert("demo", "当前没有可注入故障的飞行器")
         return None
-    bays=[w for w in engine.waypoints.values() if w.type==WaypointType.EMERGENCY_BAY]
-    victim=min(available,key=lambda a:min(a.position.distance_to(b.position) for b in bays))
     return engine.inject_event(Event(type=EventType.AIRCRAFT_FAILURE,related_id=victim.id,
         severity=Severity.EMERGENCY, description="演示事件：动力故障，搜索可达备降点",
         payload={"range_derating":0.55}))
 
 
-def _crossing_intents(engine):
-    """Change two flight intents through a shared point, without moving aircraft positions."""
+def _crossing_choice(engine):
+    """Choose feasible crossing plans without mutating any aircraft or flight intent."""
     from simulation.engine.safety import feasible
     active=[a for a in engine.aircraft.values() if a.id in engine.plans and not engine.plans[a.id].complete
             and not engine.plans[a.id].emergency_bay and a.position.z>=140]
+    if engine.demo_scenario == "full":
+        # Demonstrate a separate crossing, rather than adding a new shared goal
+        # to aircraft still evacuating or recovering from the weather event.
+        disturbed = {aircraft_id for event in engine.events
+                     if event.type in (EventType.WEATHER, EventType.AIRSPACE_CLOSURE)
+                     for aircraft_id in event.result.get("affected_aircraft", [])}
+        active = [a for a in active if a.id not in disturbed]
     choices=[]
     for i,a in enumerate(active):
         for b in active[i+1:]:
@@ -233,9 +238,18 @@ def _crossing_intents(engine):
         pa=FlightPlan([a.position.model_copy(),meeting,*engine.plans[a_id].positions[engine.plans[a_id].cursor:]],[],speed_mps=15)
         pb=FlightPlan([b.position.model_copy(),meeting,*engine.plans[b_id].positions[engine.plans[b_id].cursor:]],[],speed_mps=15)
         if feasible(engine,a,pa) and feasible(engine,b,pb):
-            engine.plans[a_id],engine.plans[b_id]=pa,pb
-            engine._record(Event(type=EventType.INFO,description="演示事件 4：两机任务意图出现交汇，交由预测检测与解脱",
-                result={"aircraft_a":a_id,"aircraft_b":b_id,"meeting_point":meeting.model_dump()}))
-            return True
+            return a_id, b_id, pa, pb, meeting
+    return None
+
+
+def _crossing_intents(engine):
+    """Change flight intents through a shared point, without moving aircraft positions."""
+    choice = _crossing_choice(engine)
+    if choice:
+        a_id, b_id, pa, pb, meeting = choice
+        engine.plans[a_id],engine.plans[b_id]=pa,pb
+        engine._record(Event(type=EventType.INFO,description="演示事件 4：两机任务意图出现交汇，交由预测检测与解脱",
+            result={"aircraft_a":a_id,"aircraft_b":b_id,"meeting_point":meeting.model_dump()}))
+        return True
     engine.alert("demo", "当前场景没有可安全构造交汇意图的两架飞机；未伪造冲突结果")
     return False

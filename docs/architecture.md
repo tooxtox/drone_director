@@ -10,7 +10,7 @@
 | core/repository | 仓储协议、SQLite 持久化、内存测试后端 |
 | algorithms | 可解释、可单测的规划和协同算法 |
 | simulation | 仿真时钟、状态推进、环境、动态事件和实际指标 |
-| frontend | Vue 3 控制台、Cesium 三维场景和 ECharts 图表 |
+| frontend | Vue 3 控制台、Three.js 三维城市场景和 ECharts 图表 |
 
 依赖方向：backend → simulation → algorithms → core；backend 也可直接依赖 core。
 算法接收明确的数据快照，不从 Web 请求或全局配置中取状态。

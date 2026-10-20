@@ -65,10 +65,6 @@ const canInject = computed(() => !!snapshot.value?.aircraft.length && !busy.valu
   (type.value !== 'event_aircraft_failure' || !!aircraftId.value) &&
   (type.value !== 'event_route_congestion' || (!!routeId.value && Number.isInteger(capacity.value) && capacity.value > 0)));
 
-async function previewScenario(item: (typeof scenarios)[number]) {
-  const created = await command('/simulation/demo', { aircraft_count: 24, seed: 42, scenario: item.id });
-  if (created) await command('/simulation/step', { steps: item.at + 1 });
-}
 </script>
 
 <template>
@@ -84,14 +80,14 @@ async function previewScenario(item: (typeof scenarios)[number]) {
       </div>
       <div class="speed-row"><label for="simulation-speed">时间倍率</label><select id="simulation-speed" v-model.number="speed" :disabled="busy" @change="command('/simulation/speed', { speed })"><option :value="1">1× 实时</option><option :value="5">5×</option><option :value="10">10×</option><option :value="20">20×</option><option :value="50">50×</option></select></div>
       <button class="wide secondary" :disabled="busy || running" @click="command('/simulation/demo', { aircraft_count: 100, seed: 42, scenario: 'full' })">{{ snapshot?.aircraft.length && selectedScenario === 'full' ? '重置 100 机完整演示' : '生成 100 机完整演示' }}</button>
-      <p class="control-note">{{ !snapshot?.aircraft.length ? '可先选择下方单项场景，直接查看事件。' : selectedScenario === 'full' ? (snapshot.simulation.demo_complete ? '四类扰动已执行，任务仍在继续调度。' : `完整演示阶段 ${snapshot.simulation.demo_stage} / 4`) : (snapshot.simulation.demo_complete ? '本场景已结束，可检查结果。' : snapshot.simulation.demo_stage ? '事件已触发。点击启动，观察后续处置。' : '场景已生成，点击启动。') }}</p>
+      <p class="control-note">{{ !snapshot?.aircraft.length ? '可先选择下方单项场景，启动后观看事件前后的过程。' : selectedScenario === 'full' ? (snapshot.simulation.demo_complete ? '四类扰动已执行，任务仍在继续调度。' : `完整演示阶段 ${snapshot.simulation.demo_stage} / 4`) : (snapshot.simulation.demo_complete ? '本场景已结束，可检查结果。' : snapshot.simulation.demo_stage ? '事件已触发，继续观察后续处置。' : '镜头已提前锁定目标，点击启动观察计划如何改变。') }}</p>
     </section>
     <section class="control-section scenario-section">
       <div class="section-title"><h2>单项事件场景</h2></div>
-      <p class="scenario-intro">点击后停在事件发生的第一秒；启动仿真，观察后续行动。</p>
+      <p class="scenario-intro">24 架无人机四向运行。选择场景即推进到目标机，启动后观察事件前后的变化。</p>
       <div class="scenario-grid">
         <button v-for="item in scenarios" :key="item.id" class="scenario-card" :class="{ selected: selectedScenario === item.id && !!snapshot?.aircraft.length }"
-          :disabled="busy || running" @click="previewScenario(item)">
+          :disabled="busy || running" @click="command('/simulation/demo', { aircraft_count: 24, seed: 42, scenario: item.id })">
           <span class="scenario-title">{{ item.name }}<small>{{ item.at }} s</small></span><span class="scenario-detail">{{ item.detail }}</span>
         </button>
       </div>

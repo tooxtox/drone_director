@@ -1,0 +1,2245 @@
+{
+  "provenance": "Historical backend regression fixtures captured before four-way single-event demos; retained to verify event adapter compatibility. Actual Engine.prepare_demo(24, 42, scenario) snapshots at TRIGGER_TIME + 2; landing after 220 additional steps. Geometry/aircraft/event values preserved; unrelated routes, waypoints, buildings and history omitted.",
+  "states": {
+    "congestion": {
+      "version": 13,
+      "environment_version": 2,
+      "simulation": {
+        "time_s": 12.0,
+        "running": false,
+        "speed": 10.0,
+        "tick_seconds": 1.0,
+        "demo_stage": 1,
+        "demo_complete": false,
+        "demo_scenario": "congestion"
+      },
+      "aircraft": [
+        {
+          "id": "UAV-021",
+          "name": "天枢 021",
+          "position": {
+            "x": 340.0,
+            "y": 950.0,
+            "z": 154.0
+          },
+          "speed": 5.385164807134505,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 899.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8061794261325405,
+          "priority": 4,
+          "mission_id": "MISSION-021",
+          "remaining_distance_m": 3967.184711498968,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-022",
+          "name": "天枢 022",
+          "position": {
+            "x": 940.0,
+            "y": 950.0,
+            "z": 154.0
+          },
+          "speed": 5.385164807134505,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 933.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9561794261325405,
+          "priority": 5,
+          "mission_id": "MISSION-022",
+          "remaining_distance_m": 3361.5058142773287,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-023",
+          "name": "天枢 023",
+          "position": {
+            "x": 1520.0,
+            "y": 950.0,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 967.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9049999999999998,
+          "priority": 1,
+          "mission_id": "MISSION-023",
+          "remaining_distance_m": 2670.7211996775627,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-024",
+          "name": "天枢 024",
+          "position": {
+            "x": 2140.0,
+            "y": 950.0,
+            "z": 154.0
+          },
+          "speed": 5.385164807134505,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 1001.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.7991794261325406,
+          "priority": 3,
+          "mission_id": "MISSION-024",
+          "remaining_distance_m": 2167.184711498968,
+          "delay_s": 0.0
+        }
+      ],
+      "metrics": {
+        "aircraft_count": 24,
+        "active_aircraft_count": 24,
+        "active_mission_count": 24,
+        "route_count": 180,
+        "conflict_count": 0,
+        "predicted_conflict_count": 0,
+        "congested_route_count": 0,
+        "alert_count": 1,
+        "average_delay_s": 9.58333333333333,
+        "average_flight_distance_m": 171.09629120178363,
+        "total_flight_distance_m": 4106.310988842807,
+        "route_utilization": 0.013956734124214934,
+        "emergency_response_ms": 0.0,
+        "completed_missions": 0,
+        "resolved_conflicts": 0
+      },
+      "history": [],
+      "conflicts": [],
+      "events": [
+        {
+          "id": "EVdb4d086d24a3",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:54.340937Z",
+          "location": null,
+          "severity": "info",
+          "description": "随机种子 42：已生成 24 架飞行器及任务，场景 congestion",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 0.0,
+          "processed_at": "2026-10-11T06:14:54.340960Z",
+          "processing_ms": 0.0,
+          "result": {
+            "seed": 42,
+            "aircraft_count": 24,
+            "scenario": "congestion"
+          }
+        },
+        {
+          "id": "EV2506cc4d17ac",
+          "type": "event_route_congestion",
+          "timestamp": "2026-10-11T06:14:54.393909Z",
+          "location": null,
+          "severity": "warning",
+          "description": "演示事件：航路容量下降，重新分配流量",
+          "related_id": "R-L0Y5X3-L0Y5X4",
+          "payload": {
+            "capacity": 1
+          },
+          "handled": true,
+          "simulation_time": 10.0,
+          "processed_at": "2026-10-11T06:14:54.416199Z",
+          "processing_ms": 18.85083700017276,
+          "result": {
+            "success": true,
+            "affected_aircraft": [
+              "UAV-022",
+              "UAV-021",
+              "UAV-024",
+              "UAV-023"
+            ],
+            "replanned_aircraft": [
+              "UAV-022",
+              "UAV-021",
+              "UAV-024",
+              "UAV-023"
+            ],
+            "holding_aircraft": [],
+            "evacuating_aircraft": [],
+            "safe_exit_holding_aircraft": [],
+            "route_id": "R-L0Y5X3-L0Y5X4",
+            "old_capacity": 8,
+            "capacity": 1,
+            "observed_flow": 0,
+            "residual_conflicts": 0,
+            "paused_for_safety": false
+          }
+        }
+      ],
+      "missions": [],
+      "waypoints": [
+        {
+          "id": "EB-0",
+          "name": "EB-0",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "EB-4",
+          "name": "EB-4",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 870.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "L0Y5X3",
+          "name": "L0Y5X3",
+          "type": "waypoint",
+          "position": {
+            "x": 2000.0,
+            "y": 950.0,
+            "z": 150.0
+          },
+          "capacity": 8,
+          "risk_level": 0.1
+        },
+        {
+          "id": "L0Y5X4",
+          "name": "L0Y5X4",
+          "type": "waypoint",
+          "position": {
+            "x": 3600.0,
+            "y": 950.0,
+            "z": 150.0
+          },
+          "capacity": 8,
+          "risk_level": 0.1
+        }
+      ],
+      "routes": [
+        {
+          "id": "R-L0Y5X3-L0Y5X4",
+          "name": "L0Y5X3 ↔ L0Y5X4",
+          "start": "L0Y5X3",
+          "end": "L0Y5X4",
+          "waypoint_ids": [
+            "L0Y5X3",
+            "L0Y5X4"
+          ],
+          "distance": 1600.0,
+          "capacity": 1,
+          "current_flow": 0,
+          "risk_level": 0.1,
+          "status": "congested",
+          "utilization": 0.0
+        }
+      ],
+      "weather": [],
+      "restrictions": [],
+      "environment": {
+        "name": "天枢试验城区",
+        "origin": {
+          "latitude": 30.5728,
+          "longitude": 104.0668,
+          "altitude": 0.0
+        },
+        "bounds": {
+          "min_x": 0.0,
+          "min_y": 0.0,
+          "max_x": 4000.0,
+          "max_y": 1300.0,
+          "width": 4000.0,
+          "height": 1300.0
+        },
+        "building_count": 82,
+        "max_building_height": 98.9,
+        "grid": {
+          "resolution": 40.0,
+          "cells_x": 100,
+          "cells_y": 33,
+          "total_cells": 3300,
+          "blocked_cells": 1315,
+          "blocked_ratio": 0.3985
+        },
+        "buildings": [
+          {
+            "id": "BL000",
+            "name": "48米楼宇-000",
+            "footprint": {
+              "points": [
+                {
+                  "x": 20.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 20.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 47.8,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL002",
+            "name": "19米楼宇-002",
+            "footprint": {
+              "points": [
+                {
+                  "x": 420.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 420.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 18.7,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL003",
+            "name": "22米楼宇-003",
+            "footprint": {
+              "points": [
+                {
+                  "x": 506.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 506.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 22.4,
+            "elevation": 0.0
+          }
+        ]
+      }
+    },
+    "weather": {
+      "version": 28,
+      "environment_version": 2,
+      "simulation": {
+        "time_s": 27.0,
+        "running": false,
+        "speed": 10.0,
+        "tick_seconds": 1.0,
+        "demo_stage": 1,
+        "demo_complete": false,
+        "demo_scenario": "weather"
+      },
+      "aircraft": [
+        {
+          "id": "UAV-013",
+          "name": "天枢 013",
+          "position": {
+            "x": 599.9615088301352,
+            "y": 633.3589941132432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 123.69006752597979,
+          "destination": {
+            "x": 3800.0,
+            "y": 599.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9174999999999994,
+          "priority": 5,
+          "mission_id": "MISSION-013",
+          "remaining_distance_m": 3666.8164425590016,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-014",
+          "name": "天枢 014",
+          "position": {
+            "x": 1199.9615088301352,
+            "y": 633.3589941132432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 123.69006752597979,
+          "destination": {
+            "x": 3800.0,
+            "y": 633.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8334999999999995,
+          "priority": 3,
+          "mission_id": "MISSION-014",
+          "remaining_distance_m": 2941.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-015",
+          "name": "天枢 015",
+          "position": {
+            "x": 1799.9615088301352,
+            "y": 633.3589941132432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 123.69006752597979,
+          "destination": {
+            "x": 3800.0,
+            "y": 667.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9684999999999995,
+          "priority": 5,
+          "mission_id": "MISSION-015",
+          "remaining_distance_m": 2341.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-016",
+          "name": "天枢 016",
+          "position": {
+            "x": 2345.0,
+            "y": 650.0,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 701.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.7974999999999994,
+          "priority": 6,
+          "mission_id": "MISSION-016",
+          "remaining_distance_m": 2490.6499948583687,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-017",
+          "name": "天枢 017",
+          "position": {
+            "x": 599.9615088301352,
+            "y": 816.6410058867568,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 56.309932474020215,
+          "destination": {
+            "x": 3800.0,
+            "y": 749.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.7964999999999994,
+          "priority": 5,
+          "mission_id": "MISSION-017",
+          "remaining_distance_m": 3666.8164425590016,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-018",
+          "name": "天枢 018",
+          "position": {
+            "x": 1199.9615088301352,
+            "y": 816.6410058867568,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 56.309932474020215,
+          "destination": {
+            "x": 3800.0,
+            "y": 783.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8984999999999995,
+          "priority": 0,
+          "mission_id": "MISSION-018",
+          "remaining_distance_m": 2941.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-019",
+          "name": "天枢 019",
+          "position": {
+            "x": 1799.9615088301352,
+            "y": 816.6410058867568,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 56.309932474020215,
+          "destination": {
+            "x": 3800.0,
+            "y": 817.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9234999999999994,
+          "priority": 8,
+          "mission_id": "MISSION-019",
+          "remaining_distance_m": 2341.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-020",
+          "name": "天枢 020",
+          "position": {
+            "x": 2345.0,
+            "y": 800.0,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 851.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8024999999999994,
+          "priority": 6,
+          "mission_id": "MISSION-020",
+          "remaining_distance_m": 2490.6499948583687,
+          "delay_s": 0.0
+        }
+      ],
+      "metrics": {
+        "aircraft_count": 24,
+        "active_aircraft_count": 24,
+        "active_mission_count": 24,
+        "route_count": 180,
+        "conflict_count": 0,
+        "predicted_conflict_count": 0,
+        "congested_route_count": 0,
+        "alert_count": 1,
+        "average_delay_s": 13.47499408299202,
+        "average_flight_distance_m": 390.375,
+        "total_flight_distance_m": 9369.0,
+        "route_utilization": 0.011111111111111112,
+        "emergency_response_ms": 0.0,
+        "completed_missions": 0,
+        "resolved_conflicts": 0
+      },
+      "history": [],
+      "conflicts": [],
+      "events": [
+        {
+          "id": "EV9a0a38e9498f",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:54.852088Z",
+          "location": null,
+          "severity": "info",
+          "description": "随机种子 42：已生成 24 架飞行器及任务，场景 weather",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 0.0,
+          "processed_at": "2026-10-11T06:14:54.852095Z",
+          "processing_ms": 0.0,
+          "result": {
+            "seed": 42,
+            "aircraft_count": 24,
+            "scenario": "weather"
+          }
+        },
+        {
+          "id": "EVc0371b48c4f8",
+          "type": "event_weather",
+          "timestamp": "2026-10-11T06:14:54.943719Z",
+          "location": null,
+          "severity": "critical",
+          "description": "演示事件：东部雷暴，动态更新禁入区域并重规划",
+          "related_id": null,
+          "payload": {
+            "affected_area": {
+              "points": [
+                {
+                  "x": 2275.0,
+                  "y": 520.0000000000001
+                },
+                {
+                  "x": 2725.0,
+                  "y": 520.0000000000001
+                },
+                {
+                  "x": 2725.0,
+                  "y": 910.0000000000001
+                },
+                {
+                  "x": 2275.0,
+                  "y": 910.0000000000001
+                }
+              ]
+            },
+            "wind_speed": 22,
+            "visibility_m": 1200,
+            "precipitation": "thunderstorm"
+          },
+          "handled": true,
+          "simulation_time": 25.0,
+          "processed_at": "2026-10-11T06:14:55.019048Z",
+          "processing_ms": 75.31445599943254,
+          "result": {
+            "success": true,
+            "affected_aircraft": [
+              "UAV-013",
+              "UAV-014",
+              "UAV-015",
+              "UAV-016",
+              "UAV-017",
+              "UAV-018",
+              "UAV-019",
+              "UAV-020"
+            ],
+            "replanned_aircraft": [
+              "UAV-013",
+              "UAV-014",
+              "UAV-015",
+              "UAV-016",
+              "UAV-017",
+              "UAV-018",
+              "UAV-019",
+              "UAV-020"
+            ],
+            "holding_aircraft": [],
+            "evacuating_aircraft": [
+              "UAV-016",
+              "UAV-020"
+            ],
+            "safe_exit_holding_aircraft": [],
+            "weather_id": "WXa704d9b8d93b",
+            "affected_routes": [
+              "R-L0Y3X3-L0Y3X4",
+              "R-L1Y3X3-L1Y3X4",
+              "R-L0Y4X3-L0Y4X4",
+              "R-L1Y4X3-L1Y4X4"
+            ],
+            "residual_conflicts": 0,
+            "paused_for_safety": false
+          }
+        }
+      ],
+      "missions": [],
+      "waypoints": [
+        {
+          "id": "EB-0",
+          "name": "EB-0",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "EB-4",
+          "name": "EB-4",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 870.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        }
+      ],
+      "routes": [],
+      "weather": [
+        {
+          "id": "WXa704d9b8d93b",
+          "name": null,
+          "wind_speed": 22.0,
+          "wind_direction": 0.0,
+          "visibility_m": 1200.0,
+          "precipitation": "thunderstorm",
+          "affected_area": {
+            "points": [
+              {
+                "x": 2275.0,
+                "y": 520.0000000000001
+              },
+              {
+                "x": 2725.0,
+                "y": 520.0000000000001
+              },
+              {
+                "x": 2725.0,
+                "y": 910.0000000000001
+              },
+              {
+                "x": 2275.0,
+                "y": 910.0000000000001
+              }
+            ]
+          },
+          "observed_at": "2026-10-11T06:14:54.943804Z"
+        }
+      ],
+      "restrictions": [],
+      "environment": {
+        "name": "天枢试验城区",
+        "origin": {
+          "latitude": 30.5728,
+          "longitude": 104.0668,
+          "altitude": 0.0
+        },
+        "bounds": {
+          "min_x": 0.0,
+          "min_y": 0.0,
+          "max_x": 4000.0,
+          "max_y": 1300.0,
+          "width": 4000.0,
+          "height": 1300.0
+        },
+        "building_count": 82,
+        "max_building_height": 98.9,
+        "grid": {
+          "resolution": 40.0,
+          "cells_x": 100,
+          "cells_y": 33,
+          "total_cells": 3300,
+          "blocked_cells": 1315,
+          "blocked_ratio": 0.3985
+        },
+        "buildings": [
+          {
+            "id": "BL000",
+            "name": "48米楼宇-000",
+            "footprint": {
+              "points": [
+                {
+                  "x": 20.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 20.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 47.8,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL002",
+            "name": "19米楼宇-002",
+            "footprint": {
+              "points": [
+                {
+                  "x": 420.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 420.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 18.7,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL003",
+            "name": "22米楼宇-003",
+            "footprint": {
+              "points": [
+                {
+                  "x": 506.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 506.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 22.4,
+            "elevation": 0.0
+          }
+        ]
+      }
+    },
+    "closure": {
+      "version": 28,
+      "environment_version": 2,
+      "simulation": {
+        "time_s": 27.0,
+        "running": false,
+        "speed": 10.0,
+        "tick_seconds": 1.0,
+        "demo_stage": 1,
+        "demo_complete": false,
+        "demo_scenario": "closure"
+      },
+      "aircraft": [
+        {
+          "id": "UAV-013",
+          "name": "天枢 013",
+          "position": {
+            "x": 599.9615088301352,
+            "y": 633.3589941132432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 123.69006752597979,
+          "destination": {
+            "x": 3800.0,
+            "y": 599.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9174999999999994,
+          "priority": 5,
+          "mission_id": "MISSION-013",
+          "remaining_distance_m": 3666.8164425590016,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-014",
+          "name": "天枢 014",
+          "position": {
+            "x": 1199.9615088301352,
+            "y": 633.3589941132432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 123.69006752597979,
+          "destination": {
+            "x": 3800.0,
+            "y": 633.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8334999999999995,
+          "priority": 3,
+          "mission_id": "MISSION-014",
+          "remaining_distance_m": 2941.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-015",
+          "name": "天枢 015",
+          "position": {
+            "x": 1799.9615088301352,
+            "y": 633.3589941132432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 123.69006752597979,
+          "destination": {
+            "x": 3800.0,
+            "y": 667.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9684999999999995,
+          "priority": 5,
+          "mission_id": "MISSION-015",
+          "remaining_distance_m": 2341.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-016",
+          "name": "天枢 016",
+          "position": {
+            "x": 2345.0,
+            "y": 650.0,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 701.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.7974999999999994,
+          "priority": 6,
+          "mission_id": "MISSION-016",
+          "remaining_distance_m": 2490.6499948583687,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-017",
+          "name": "天枢 017",
+          "position": {
+            "x": 599.9615088301352,
+            "y": 816.6410058867568,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 56.309932474020215,
+          "destination": {
+            "x": 3800.0,
+            "y": 749.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.7964999999999994,
+          "priority": 5,
+          "mission_id": "MISSION-017",
+          "remaining_distance_m": 3666.8164425590016,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-018",
+          "name": "天枢 018",
+          "position": {
+            "x": 1199.9615088301352,
+            "y": 816.6410058867568,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 56.309932474020215,
+          "destination": {
+            "x": 3800.0,
+            "y": 783.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8984999999999995,
+          "priority": 0,
+          "mission_id": "MISSION-018",
+          "remaining_distance_m": 2941.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-019",
+          "name": "天枢 019",
+          "position": {
+            "x": 1799.9615088301352,
+            "y": 816.6410058867568,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 56.309932474020215,
+          "destination": {
+            "x": 3800.0,
+            "y": 817.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9234999999999994,
+          "priority": 8,
+          "mission_id": "MISSION-019",
+          "remaining_distance_m": 2341.137545337362,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-020",
+          "name": "天枢 020",
+          "position": {
+            "x": 2345.0,
+            "y": 800.0,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 270.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 851.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.8024999999999994,
+          "priority": 6,
+          "mission_id": "MISSION-020",
+          "remaining_distance_m": 2490.6499948583687,
+          "delay_s": 0.0
+        }
+      ],
+      "metrics": {
+        "aircraft_count": 24,
+        "active_aircraft_count": 24,
+        "active_mission_count": 24,
+        "route_count": 180,
+        "conflict_count": 0,
+        "predicted_conflict_count": 0,
+        "congested_route_count": 0,
+        "alert_count": 1,
+        "average_delay_s": 13.47499408299202,
+        "average_flight_distance_m": 390.375,
+        "total_flight_distance_m": 9369.0,
+        "route_utilization": 0.011111111111111112,
+        "emergency_response_ms": 0.0,
+        "completed_missions": 0,
+        "resolved_conflicts": 0
+      },
+      "history": [],
+      "conflicts": [],
+      "events": [
+        {
+          "id": "EV79a8f85c3a20",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:55.460587Z",
+          "location": null,
+          "severity": "info",
+          "description": "随机种子 42：已生成 24 架飞行器及任务，场景 closure",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 0.0,
+          "processed_at": "2026-10-11T06:14:55.460594Z",
+          "processing_ms": 0.0,
+          "result": {
+            "seed": 42,
+            "aircraft_count": 24,
+            "scenario": "closure"
+          }
+        },
+        {
+          "id": "EVc2e1e964f4a6",
+          "type": "event_airspace_closure",
+          "timestamp": "2026-10-11T06:14:55.551628Z",
+          "location": null,
+          "severity": "warning",
+          "description": "演示事件：城市东部临时空域管制",
+          "related_id": null,
+          "payload": {
+            "polygon": {
+              "points": [
+                {
+                  "x": 2275.0,
+                  "y": 520.0000000000001
+                },
+                {
+                  "x": 2725.0,
+                  "y": 520.0000000000001
+                },
+                {
+                  "x": 2725.0,
+                  "y": 910.0000000000001
+                },
+                {
+                  "x": 2275.0,
+                  "y": 910.0000000000001
+                }
+              ]
+            },
+            "min_altitude": 120,
+            "max_altitude": 230,
+            "reason": "临时空域管制演示"
+          },
+          "handled": true,
+          "simulation_time": 25.0,
+          "processed_at": "2026-10-11T06:14:55.613122Z",
+          "processing_ms": 61.48070400013239,
+          "result": {
+            "success": true,
+            "affected_aircraft": [
+              "UAV-013",
+              "UAV-014",
+              "UAV-015",
+              "UAV-016",
+              "UAV-017",
+              "UAV-018",
+              "UAV-019",
+              "UAV-020"
+            ],
+            "replanned_aircraft": [
+              "UAV-013",
+              "UAV-014",
+              "UAV-015",
+              "UAV-016",
+              "UAV-017",
+              "UAV-018",
+              "UAV-019",
+              "UAV-020"
+            ],
+            "holding_aircraft": [],
+            "evacuating_aircraft": [
+              "UAV-016",
+              "UAV-020"
+            ],
+            "safe_exit_holding_aircraft": [],
+            "restriction_id": "RZ67967c12827c",
+            "affected_routes": [
+              "R-L0Y3X3-L0Y3X4",
+              "R-L1Y3X3-L1Y3X4",
+              "R-L0Y4X3-L0Y4X4",
+              "R-L1Y4X3-L1Y4X4"
+            ],
+            "residual_conflicts": 0,
+            "paused_for_safety": false
+          }
+        }
+      ],
+      "missions": [],
+      "waypoints": [
+        {
+          "id": "EB-0",
+          "name": "EB-0",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "EB-4",
+          "name": "EB-4",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 870.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        }
+      ],
+      "routes": [],
+      "weather": [],
+      "restrictions": [
+        {
+          "id": "RZ67967c12827c",
+          "name": null,
+          "polygon": {
+            "points": [
+              {
+                "x": 2275.0,
+                "y": 520.0000000000001
+              },
+              {
+                "x": 2725.0,
+                "y": 520.0000000000001
+              },
+              {
+                "x": 2725.0,
+                "y": 910.0000000000001
+              },
+              {
+                "x": 2275.0,
+                "y": 910.0000000000001
+              }
+            ]
+          },
+          "min_altitude": 120.0,
+          "max_altitude": 230.0,
+          "active": true,
+          "reason": "临时空域管制演示"
+        }
+      ],
+      "environment": {
+        "name": "天枢试验城区",
+        "origin": {
+          "latitude": 30.5728,
+          "longitude": 104.0668,
+          "altitude": 0.0
+        },
+        "bounds": {
+          "min_x": 0.0,
+          "min_y": 0.0,
+          "max_x": 4000.0,
+          "max_y": 1300.0,
+          "width": 4000.0,
+          "height": 1300.0
+        },
+        "building_count": 82,
+        "max_building_height": 98.9,
+        "grid": {
+          "resolution": 40.0,
+          "cells_x": 100,
+          "cells_y": 33,
+          "total_cells": 3300,
+          "blocked_cells": 1315,
+          "blocked_ratio": 0.3985
+        },
+        "buildings": [
+          {
+            "id": "BL000",
+            "name": "48米楼宇-000",
+            "footprint": {
+              "points": [
+                {
+                  "x": 20.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 20.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 47.8,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL002",
+            "name": "19米楼宇-002",
+            "footprint": {
+              "points": [
+                {
+                  "x": 420.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 420.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 18.7,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL003",
+            "name": "22米楼宇-003",
+            "footprint": {
+              "points": [
+                {
+                  "x": 506.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 506.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 22.4,
+            "elevation": 0.0
+          }
+        ]
+      }
+    },
+    "failure": {
+      "version": 43,
+      "environment_version": 1,
+      "simulation": {
+        "time_s": 42.0,
+        "running": false,
+        "speed": 10.0,
+        "tick_seconds": 1.0,
+        "demo_stage": 1,
+        "demo_complete": false,
+        "demo_scenario": "failure"
+      },
+      "aircraft": [
+        {
+          "id": "UAV-003",
+          "name": "天枢 003",
+          "position": {
+            "x": 2028.3157506909806,
+            "y": 209.9105127418432,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 70.70995378081128,
+          "destination": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "status": "diverting",
+          "battery": 0.8086363636363629,
+          "priority": 10,
+          "flight_plan": [
+            {
+              "x": 2028.3157506909806,
+              "y": 209.9105127418432,
+              "z": 150.0
+            },
+            {
+              "x": 2200.0,
+              "y": 270.0,
+              "z": 150.0
+            },
+            {
+              "x": 2200.0,
+              "y": 270.0,
+              "z": 0.0
+            }
+          ],
+          "mission_id": "MISSION-003",
+          "remaining_distance_m": 331.89620100417085,
+          "delay_s": 0.0
+        }
+      ],
+      "metrics": {
+        "aircraft_count": 24,
+        "active_aircraft_count": 24,
+        "active_mission_count": 23,
+        "route_count": 180,
+        "conflict_count": 0,
+        "predicted_conflict_count": 0,
+        "congested_route_count": 0,
+        "alert_count": 1,
+        "average_delay_s": 0.0,
+        "average_flight_distance_m": 613.75,
+        "total_flight_distance_m": 14730.0,
+        "route_utilization": 0.016666666666666666,
+        "emergency_response_ms": 12.808804000087548,
+        "completed_missions": 0,
+        "resolved_conflicts": 0
+      },
+      "history": [],
+      "conflicts": [],
+      "events": [
+        {
+          "id": "EV82f741fe94d1",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:56.045013Z",
+          "location": null,
+          "severity": "info",
+          "description": "随机种子 42：已生成 24 架飞行器及任务，场景 failure",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 0.0,
+          "processed_at": "2026-10-11T06:14:56.045019Z",
+          "processing_ms": 0.0,
+          "result": {
+            "seed": 42,
+            "aircraft_count": 24,
+            "scenario": "failure"
+          }
+        },
+        {
+          "id": "EVd76d0d98d49b",
+          "type": "event_aircraft_failure",
+          "timestamp": "2026-10-11T06:14:56.188774Z",
+          "location": null,
+          "severity": "emergency",
+          "description": "演示事件：动力故障，搜索可达备降点",
+          "related_id": "UAV-003",
+          "payload": {
+            "range_derating": 0.55
+          },
+          "handled": true,
+          "simulation_time": 40.0,
+          "processed_at": "2026-10-11T06:14:56.201601Z",
+          "processing_ms": 12.808804000087548,
+          "result": {
+            "success": true,
+            "aircraft_id": "UAV-003",
+            "remaining_range_m": 8035.499999999993,
+            "bay_id": "EB-0",
+            "planned_distance_m": 361.8962010041709,
+            "path": [
+              {
+                "x": 2000.0,
+                "y": 200.0,
+                "z": 150.0
+              },
+              {
+                "x": 2200.0,
+                "y": 270.0,
+                "z": 150.0
+              },
+              {
+                "x": 2200.0,
+                "y": 270.0,
+                "z": 0.0
+              }
+            ],
+            "landed": false,
+            "residual_conflicts": 0,
+            "paused_for_safety": false
+          }
+        }
+      ],
+      "missions": [],
+      "waypoints": [
+        {
+          "id": "EB-0",
+          "name": "EB-0",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "EB-4",
+          "name": "EB-4",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 870.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        }
+      ],
+      "routes": [],
+      "weather": [],
+      "restrictions": [],
+      "environment": {
+        "name": "天枢试验城区",
+        "origin": {
+          "latitude": 30.5728,
+          "longitude": 104.0668,
+          "altitude": 0.0
+        },
+        "bounds": {
+          "min_x": 0.0,
+          "min_y": 0.0,
+          "max_x": 4000.0,
+          "max_y": 1300.0,
+          "width": 4000.0,
+          "height": 1300.0
+        },
+        "building_count": 82,
+        "max_building_height": 98.9,
+        "grid": {
+          "resolution": 40.0,
+          "cells_x": 100,
+          "cells_y": 33,
+          "total_cells": 3300,
+          "blocked_cells": 1315,
+          "blocked_ratio": 0.3985
+        },
+        "buildings": [
+          {
+            "id": "BL000",
+            "name": "48米楼宇-000",
+            "footprint": {
+              "points": [
+                {
+                  "x": 20.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 20.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 47.8,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL002",
+            "name": "19米楼宇-002",
+            "footprint": {
+              "points": [
+                {
+                  "x": 420.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 420.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 18.7,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL003",
+            "name": "22米楼宇-003",
+            "footprint": {
+              "points": [
+                {
+                  "x": 506.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 506.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 22.4,
+            "elevation": 0.0
+          }
+        ]
+      }
+    },
+    "landing": {
+      "version": 161,
+      "environment_version": 1,
+      "simulation": {
+        "time_s": 159.0,
+        "running": false,
+        "speed": 10.0,
+        "tick_seconds": 1.0,
+        "demo_stage": 1,
+        "demo_complete": true,
+        "demo_scenario": "failure"
+      },
+      "aircraft": [
+        {
+          "id": "UAV-003",
+          "name": "天枢 003",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "speed": 0.0,
+          "heading": 0.0,
+          "destination": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "status": "landed",
+          "battery": 0.7751114948480632,
+          "priority": 10,
+          "mission_id": null,
+          "remaining_distance_m": 0.0,
+          "delay_s": 0
+        }
+      ],
+      "metrics": {
+        "aircraft_count": 24,
+        "active_aircraft_count": 23,
+        "active_mission_count": 23,
+        "route_count": 180,
+        "conflict_count": 0,
+        "predicted_conflict_count": 0,
+        "congested_route_count": 0,
+        "alert_count": 1,
+        "average_delay_s": 0.0,
+        "average_flight_distance_m": 2184.0906960366674,
+        "total_flight_distance_m": 52418.17670488002,
+        "route_utilization": 0.01597222222222222,
+        "emergency_response_ms": 12.808804000087548,
+        "completed_missions": 0,
+        "resolved_conflicts": 0
+      },
+      "history": [],
+      "conflicts": [],
+      "events": [
+        {
+          "id": "EV82f741fe94d1",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:56.045013Z",
+          "location": null,
+          "severity": "info",
+          "description": "随机种子 42：已生成 24 架飞行器及任务，场景 failure",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 0.0,
+          "processed_at": "2026-10-11T06:14:56.045019Z",
+          "processing_ms": 0.0,
+          "result": {
+            "seed": 42,
+            "aircraft_count": 24,
+            "scenario": "failure"
+          }
+        },
+        {
+          "id": "EVd76d0d98d49b",
+          "type": "event_aircraft_failure",
+          "timestamp": "2026-10-11T06:14:56.188774Z",
+          "location": null,
+          "severity": "emergency",
+          "description": "演示事件：动力故障，搜索可达备降点",
+          "related_id": "UAV-003",
+          "payload": {
+            "range_derating": 0.55
+          },
+          "handled": true,
+          "simulation_time": 40.0,
+          "processed_at": "2026-10-11T06:14:56.201601Z",
+          "processing_ms": 12.808804000087548,
+          "result": {
+            "success": true,
+            "aircraft_id": "UAV-003",
+            "remaining_range_m": 8035.499999999993,
+            "bay_id": "EB-0",
+            "planned_distance_m": 361.8962010041709,
+            "path": [
+              {
+                "x": 2000.0,
+                "y": 200.0,
+                "z": 150.0
+              },
+              {
+                "x": 2200.0,
+                "y": 270.0,
+                "z": 150.0
+              },
+              {
+                "x": 2200.0,
+                "y": 270.0,
+                "z": 0.0
+              }
+            ],
+            "landed": false,
+            "residual_conflicts": 0,
+            "paused_for_safety": false
+          }
+        },
+        {
+          "id": "EV8dd161bf04d4",
+          "type": "event_emergency_landing",
+          "timestamp": "2026-10-11T06:14:56.517784Z",
+          "location": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "severity": "info",
+          "description": "UAV-003 已抵达备降点 EB-0",
+          "related_id": "UAV-003",
+          "payload": {},
+          "handled": true,
+          "simulation_time": 129.0,
+          "processed_at": "2026-10-11T06:14:56.517791Z",
+          "processing_ms": 0.0,
+          "result": {
+            "bay_id": "EB-0",
+            "landed": true
+          }
+        },
+        {
+          "id": "EV395e7e92e5d0",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:56.617853Z",
+          "location": null,
+          "severity": "info",
+          "description": "单项场景 failure 已停止；结果来自实际仿真",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 159.0,
+          "processed_at": "2026-10-11T06:14:56.617868Z",
+          "processing_ms": 0.0,
+          "result": {
+            "scenario": "failure",
+            "observed": true,
+            "resolved_conflicts": 0,
+            "emergency_landings": 1
+          }
+        }
+      ],
+      "missions": [],
+      "waypoints": [
+        {
+          "id": "EB-0",
+          "name": "EB-0",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "EB-4",
+          "name": "EB-4",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 870.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        }
+      ],
+      "routes": [],
+      "weather": [],
+      "restrictions": [],
+      "environment": {
+        "name": "天枢试验城区",
+        "origin": {
+          "latitude": 30.5728,
+          "longitude": 104.0668,
+          "altitude": 0.0
+        },
+        "bounds": {
+          "min_x": 0.0,
+          "min_y": 0.0,
+          "max_x": 4000.0,
+          "max_y": 1300.0,
+          "width": 4000.0,
+          "height": 1300.0
+        },
+        "building_count": 82,
+        "max_building_height": 98.9,
+        "grid": {
+          "resolution": 40.0,
+          "cells_x": 100,
+          "cells_y": 33,
+          "total_cells": 3300,
+          "blocked_cells": 1315,
+          "blocked_ratio": 0.3985
+        },
+        "buildings": [
+          {
+            "id": "BL000",
+            "name": "48米楼宇-000",
+            "footprint": {
+              "points": [
+                {
+                  "x": 20.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 20.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 47.8,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL002",
+            "name": "19米楼宇-002",
+            "footprint": {
+              "points": [
+                {
+                  "x": 420.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 420.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 18.7,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL003",
+            "name": "22米楼宇-003",
+            "footprint": {
+              "points": [
+                {
+                  "x": 506.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 506.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 22.4,
+            "elevation": 0.0
+          }
+        ]
+      }
+    },
+    "conflict": {
+      "version": 42,
+      "environment_version": 1,
+      "simulation": {
+        "time_s": 42.0,
+        "running": false,
+        "speed": 10.0,
+        "tick_seconds": 1.0,
+        "demo_stage": 1,
+        "demo_complete": false,
+        "demo_scenario": "conflict"
+      },
+      "aircraft": [
+        {
+          "id": "UAV-002",
+          "name": "天枢 002",
+          "position": {
+            "x": 1425.4399491201525,
+            "y": 215.89996820009537,
+            "z": 150.0
+          },
+          "speed": 15.0,
+          "heading": 57.99461679191651,
+          "destination": {
+            "x": 3800.0,
+            "y": 183.0,
+            "z": 0.0
+          },
+          "status": "en_route",
+          "battery": 0.9129999999999991,
+          "priority": 3,
+          "flight_plan": [
+            {
+              "x": 1425.4399491201525,
+              "y": 215.89996820009537,
+              "z": 150.0
+            },
+            {
+              "x": 1520.0,
+              "y": 275.0,
+              "z": 150.0
+            },
+            {
+              "x": 2000.0,
+              "y": 200.0,
+              "z": 150.0
+            },
+            {
+              "x": 3600.0,
+              "y": 200.0,
+              "z": 150.0
+            },
+            {
+              "x": 3800.0,
+              "y": 183.0,
+              "z": 150.0
+            },
+            {
+              "x": 3800.0,
+              "y": 183.0,
+              "z": 0.0
+            }
+          ],
+          "mission_id": "MISSION-002",
+          "remaining_distance_m": 2548.0549588794615,
+          "delay_s": 0.0
+        },
+        {
+          "id": "UAV-006",
+          "name": "天枢 006",
+          "position": {
+            "x": 1400.0,
+            "y": 350.0,
+            "z": 150.0
+          },
+          "speed": 0.0,
+          "heading": 90.0,
+          "destination": {
+            "x": 3800.0,
+            "y": 333.0,
+            "z": 0.0
+          },
+          "status": "hovering",
+          "battery": 0.772666666666666,
+          "priority": 1,
+          "flight_plan": [
+            {
+              "x": 1400.0,
+              "y": 350.0,
+              "z": 150.0
+            },
+            {
+              "x": 1520.0,
+              "y": 275.0,
+              "z": 150.0
+            },
+            {
+              "x": 2000.0,
+              "y": 350.0,
+              "z": 150.0
+            },
+            {
+              "x": 3600.0,
+              "y": 350.0,
+              "z": 150.0
+            },
+            {
+              "x": 3800.0,
+              "y": 333.0,
+              "z": 150.0
+            },
+            {
+              "x": 3800.0,
+              "y": 333.0,
+              "z": 0.0
+            }
+          ],
+          "mission_id": "MISSION-006",
+          "remaining_distance_m": 2578.054958879461,
+          "delay_s": 0.0
+        }
+      ],
+      "metrics": {
+        "aircraft_count": 24,
+        "active_aircraft_count": 24,
+        "active_mission_count": 24,
+        "route_count": 180,
+        "conflict_count": 0,
+        "predicted_conflict_count": 0,
+        "congested_route_count": 0,
+        "alert_count": 1,
+        "average_delay_s": 0.6518542177883214,
+        "average_flight_distance_m": 612.5,
+        "total_flight_distance_m": 14700.0,
+        "route_utilization": 0.016666666666666666,
+        "emergency_response_ms": 0.0,
+        "completed_missions": 0,
+        "resolved_conflicts": 1
+      },
+      "history": [],
+      "conflicts": [],
+      "events": [
+        {
+          "id": "EVfa90571a75e6",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:57.050062Z",
+          "location": null,
+          "severity": "info",
+          "description": "随机种子 42：已生成 24 架飞行器及任务，场景 conflict",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 0.0,
+          "processed_at": "2026-10-11T06:14:57.050069Z",
+          "processing_ms": 0.0,
+          "result": {
+            "seed": 42,
+            "aircraft_count": 24,
+            "scenario": "conflict"
+          }
+        },
+        {
+          "id": "EV98a90a3d6da8",
+          "type": "event_info",
+          "timestamp": "2026-10-11T06:14:57.194515Z",
+          "location": null,
+          "severity": "info",
+          "description": "演示事件 4：两机任务意图出现交汇，交由预测检测与解脱",
+          "related_id": null,
+          "payload": {},
+          "handled": true,
+          "simulation_time": 40.0,
+          "processed_at": "2026-10-11T06:14:57.194525Z",
+          "processing_ms": 0.0,
+          "result": {
+            "aircraft_a": "UAV-002",
+            "aircraft_b": "UAV-006",
+            "meeting_point": {
+              "x": 1520.0,
+              "y": 275.0,
+              "z": 150.0
+            }
+          }
+        },
+        {
+          "id": "EV2f7c5cd99ade",
+          "type": "event_conflict",
+          "timestamp": "2026-10-11T06:14:57.209618Z",
+          "location": {
+            "x": 1496.0,
+            "y": 275.0,
+            "z": 150.0
+          },
+          "severity": "warning",
+          "description": "UAV-002 / UAV-006 预测冲突，执行 delay",
+          "related_id": "UAV-006",
+          "payload": {},
+          "handled": true,
+          "simulation_time": 40.0,
+          "processed_at": "2026-10-11T06:14:57.209626Z",
+          "processing_ms": 0.0,
+          "result": {
+            "action": "delay",
+            "aircraft_id": "UAV-006",
+            "parameters": {
+              "candidate_key": "UAV-006:8",
+              "speed_mps": 15,
+              "wait_s": 12.0,
+              "altitude_m": 150.0
+            },
+            "cost": 12.0,
+            "reason": "Safe against all predicted aircraft; cost = 1×12 delay + 1×0 energy + 1×0 congestion",
+            "success": true,
+            "predicted_conflict": {
+              "aircraft_a": "UAV-002",
+              "aircraft_b": "UAV-006",
+              "conflict_time": 47.54718490564528,
+              "conflict_position": {
+                "x": 1496.0,
+                "y": 275.0,
+                "z": 150.0
+              },
+              "severity": "warning"
+            }
+          }
+        }
+      ],
+      "missions": [],
+      "waypoints": [
+        {
+          "id": "EB-0",
+          "name": "EB-0",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 270.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        },
+        {
+          "id": "EB-4",
+          "name": "EB-4",
+          "type": "emergency_bay",
+          "position": {
+            "x": 2200.0,
+            "y": 870.0,
+            "z": 0.0
+          },
+          "capacity": 1,
+          "risk_level": 0.1
+        }
+      ],
+      "routes": [],
+      "weather": [],
+      "restrictions": [],
+      "environment": {
+        "name": "天枢试验城区",
+        "origin": {
+          "latitude": 30.5728,
+          "longitude": 104.0668,
+          "altitude": 0.0
+        },
+        "bounds": {
+          "min_x": 0.0,
+          "min_y": 0.0,
+          "max_x": 4000.0,
+          "max_y": 1300.0,
+          "width": 4000.0,
+          "height": 1300.0
+        },
+        "building_count": 82,
+        "max_building_height": 98.9,
+        "grid": {
+          "resolution": 40.0,
+          "cells_x": 100,
+          "cells_y": 33,
+          "total_cells": 3300,
+          "blocked_cells": 1315,
+          "blocked_ratio": 0.3985
+        },
+        "buildings": [
+          {
+            "id": "BL000",
+            "name": "48米楼宇-000",
+            "footprint": {
+              "points": [
+                {
+                  "x": 20.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 94.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 20.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 47.8,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL002",
+            "name": "19米楼宇-002",
+            "footprint": {
+              "points": [
+                {
+                  "x": 420.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 494.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 420.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 18.7,
+            "elevation": 0.0
+          },
+          {
+            "id": "BL003",
+            "name": "22米楼宇-003",
+            "footprint": {
+              "points": [
+                {
+                  "x": 506.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 20.0
+                },
+                {
+                  "x": 580.0,
+                  "y": 180.0
+                },
+                {
+                  "x": 506.0,
+                  "y": 180.0
+                }
+              ]
+            },
+            "height": 22.4,
+            "elevation": 0.0
+          }
+        ]
+      }
+    }
+  }
+}

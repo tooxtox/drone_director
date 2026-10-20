@@ -1,0 +1,996 @@
+{
+  "simulation": {
+    "time_s": 70.0,
+    "running": false,
+    "speed": 10.0,
+    "tick_seconds": 1.0,
+    "demo_stage": 1,
+    "demo_complete": true,
+    "demo_scenario": "conflict"
+  },
+  "metrics": {
+    "aircraft_count": 24,
+    "active_aircraft_count": 24,
+    "active_mission_count": 24,
+    "route_count": 294,
+    "conflict_count": 0,
+    "predicted_conflict_count": 0,
+    "congested_route_count": 0,
+    "alert_count": 1,
+    "average_delay_s": 0.6518542177883239,
+    "average_flight_distance_m": 1042.5,
+    "total_flight_distance_m": 25020.0,
+    "route_utilization": 0.01020408163265306,
+    "emergency_response_ms": 0.0,
+    "completed_missions": 0,
+    "resolved_conflicts": 1
+  },
+  "history": [
+    {
+      "time_s": 1.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 360.0
+    },
+    {
+      "time_s": 2.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 720.0
+    },
+    {
+      "time_s": 3.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 1080.0
+    },
+    {
+      "time_s": 4.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 1440.0
+    },
+    {
+      "time_s": 5.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 1800.0
+    },
+    {
+      "time_s": 6.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 2160.0
+    },
+    {
+      "time_s": 7.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 2520.0
+    },
+    {
+      "time_s": 8.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 2880.0
+    },
+    {
+      "time_s": 9.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 3240.0
+    },
+    {
+      "time_s": 10.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 3600.0
+    },
+    {
+      "time_s": 11.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 3960.0
+    },
+    {
+      "time_s": 12.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 4320.0
+    },
+    {
+      "time_s": 13.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 4680.0
+    },
+    {
+      "time_s": 14.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 5040.0
+    },
+    {
+      "time_s": 15.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 5400.0
+    },
+    {
+      "time_s": 16.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 5760.0
+    },
+    {
+      "time_s": 17.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 6120.0
+    },
+    {
+      "time_s": 18.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 6480.0
+    },
+    {
+      "time_s": 19.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 6840.0
+    },
+    {
+      "time_s": 20.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 7200.0
+    },
+    {
+      "time_s": 21.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 7560.0
+    },
+    {
+      "time_s": 22.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 7920.0
+    },
+    {
+      "time_s": 23.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 8280.0
+    },
+    {
+      "time_s": 24.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 8640.0
+    },
+    {
+      "time_s": 25.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 9000.0
+    },
+    {
+      "time_s": 26.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 9360.0
+    },
+    {
+      "time_s": 27.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 9720.0
+    },
+    {
+      "time_s": 28.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 10080.0
+    },
+    {
+      "time_s": 29.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 10440.0
+    },
+    {
+      "time_s": 30.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 10800.0
+    },
+    {
+      "time_s": 31.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 11160.0
+    },
+    {
+      "time_s": 32.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 11520.0
+    },
+    {
+      "time_s": 33.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 11880.0
+    },
+    {
+      "time_s": 34.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 12240.0
+    },
+    {
+      "time_s": 35.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 12600.0
+    },
+    {
+      "time_s": 36.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 12960.0
+    },
+    {
+      "time_s": 37.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 13320.0
+    },
+    {
+      "time_s": 38.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 13680.0
+    },
+    {
+      "time_s": 39.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 14040.0
+    },
+    {
+      "time_s": 40.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.0,
+      "total_distance_m": 14400.0
+    },
+    {
+      "time_s": 41.0,
+      "conflicts": 1,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 14745.0
+    },
+    {
+      "time_s": 42.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 15090.0
+    },
+    {
+      "time_s": 43.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 15435.0
+    },
+    {
+      "time_s": 44.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 15780.0
+    },
+    {
+      "time_s": 45.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 16125.0
+    },
+    {
+      "time_s": 46.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 16470.0
+    },
+    {
+      "time_s": 47.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883214,
+      "total_distance_m": 16815.0
+    },
+    {
+      "time_s": 48.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 17160.0
+    },
+    {
+      "time_s": 49.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 17505.0
+    },
+    {
+      "time_s": 50.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 17850.0
+    },
+    {
+      "time_s": 51.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 18195.0
+    },
+    {
+      "time_s": 52.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 18540.0
+    },
+    {
+      "time_s": 53.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 18900.0
+    },
+    {
+      "time_s": 54.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 19260.0
+    },
+    {
+      "time_s": 55.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 19620.0
+    },
+    {
+      "time_s": 56.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 19980.0
+    },
+    {
+      "time_s": 57.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 20340.0
+    },
+    {
+      "time_s": 58.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 20700.0
+    },
+    {
+      "time_s": 59.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 21060.0
+    },
+    {
+      "time_s": 60.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 21420.0
+    },
+    {
+      "time_s": 61.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 21780.0
+    },
+    {
+      "time_s": 62.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 22140.0
+    },
+    {
+      "time_s": 63.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 22500.0
+    },
+    {
+      "time_s": 64.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 22860.0
+    },
+    {
+      "time_s": 65.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 23220.0
+    },
+    {
+      "time_s": 66.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 23580.0
+    },
+    {
+      "time_s": 67.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883262,
+      "total_distance_m": 23940.0
+    },
+    {
+      "time_s": 68.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 24300.0
+    },
+    {
+      "time_s": 69.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 24660.0
+    },
+    {
+      "time_s": 70.0,
+      "conflicts": 0,
+      "residual_conflicts": 0,
+      "route_utilization": 0.01020408163265306,
+      "average_delay_s": 0.6518542177883239,
+      "total_distance_m": 25020.0
+    }
+  ],
+  "events": [
+    {
+      "id": "EVadfc871346dd",
+      "type": "event_info",
+      "timestamp": "2026-10-20T14:43:44.282659Z",
+      "location": null,
+      "severity": "info",
+      "description": "随机种子 42：已生成 24 架飞行器及任务，场景 conflict",
+      "related_id": null,
+      "payload": {},
+      "handled": true,
+      "simulation_time": 0.0,
+      "processed_at": "2026-10-20T14:43:44.282680Z",
+      "processing_ms": 0.0,
+      "result": {
+        "seed": 42,
+        "aircraft_count": 24,
+        "scenario": "conflict",
+        "traffic_pattern": "four_way",
+        "camera_cue": {
+          "aircraft_id": "UAV-001",
+          "aircraft_ids": [
+            "UAV-001",
+            "UAV-005"
+          ],
+          "event_at_s": 40,
+          "scenario": "conflict",
+          "initial_plan": {
+            "position": {
+              "x": 200.0,
+              "y": 1625.0,
+              "z": 150.0
+            },
+            "path": [
+              {
+                "x": 200.0,
+                "y": 1625.0,
+                "z": 150.0
+              },
+              {
+                "x": 800.0,
+                "y": 1625.0,
+                "z": 150.0
+              },
+              {
+                "x": 1400.0,
+                "y": 1625.0,
+                "z": 150.0
+              },
+              {
+                "x": 2000.0,
+                "y": 1625.0,
+                "z": 150.0
+              },
+              {
+                "x": 3600.0,
+                "y": 1625.0,
+                "z": 150.0
+              },
+              {
+                "x": 3900.0,
+                "y": 1625.0,
+                "z": 150.0
+              },
+              {
+                "x": 3900.0,
+                "y": 1625.0,
+                "z": 0.0
+              }
+            ],
+            "path_omitted": false,
+            "planned_speed_mps": 15.0,
+            "wait_s": 0.0,
+            "remaining_distance_m": 3850.0,
+            "destination": {
+              "x": 3900.0,
+              "y": 1625.0,
+              "z": 0.0
+            },
+            "status": "en_route"
+          }
+        }
+      }
+    },
+    {
+      "id": "EV660c96dd62eb",
+      "type": "event_info",
+      "timestamp": "2026-10-20T14:43:44.398804Z",
+      "location": null,
+      "severity": "info",
+      "description": "演示事件 4：两机任务意图出现交汇，交由预测检测与解脱",
+      "related_id": null,
+      "payload": {},
+      "handled": true,
+      "simulation_time": 40.0,
+      "processed_at": "2026-10-20T14:43:44.398814Z",
+      "processing_ms": 0.0,
+      "result": {
+        "aircraft_a": "UAV-001",
+        "aircraft_b": "UAV-005",
+        "meeting_point": {
+          "x": 920.0,
+          "y": 1700.0,
+          "z": 150.0
+        }
+      }
+    },
+    {
+      "id": "EV6302aced8d61",
+      "type": "event_conflict",
+      "timestamp": "2026-10-20T14:43:44.432637Z",
+      "location": {
+        "x": 896.0,
+        "y": 1700.0,
+        "z": 150.0
+      },
+      "severity": "warning",
+      "description": "UAV-001 / UAV-005 预测冲突，执行 delay",
+      "related_id": "UAV-001",
+      "payload": {},
+      "handled": true,
+      "simulation_time": 40.0,
+      "processed_at": "2026-10-20T14:43:44.432645Z",
+      "processing_ms": 0.0,
+      "result": {
+        "action": "delay",
+        "aircraft_id": "UAV-001",
+        "parameters": {
+          "candidate_key": "UAV-001:3",
+          "speed_mps": 15,
+          "wait_s": 12.0,
+          "altitude_m": 150.0
+        },
+        "cost": 12.0,
+        "reason": "Safe against all predicted aircraft; cost = 1×12 delay + 1×0 energy + 1×0 congestion",
+        "success": true,
+        "predicted_conflict": {
+          "aircraft_a": "UAV-001",
+          "aircraft_b": "UAV-005",
+          "conflict_time": 47.54718490564528,
+          "conflict_position": {
+            "x": 896.0,
+            "y": 1700.0,
+            "z": 150.0
+          },
+          "severity": "warning"
+        },
+        "presentation": {
+          "captured_at_s": 40.0,
+          "examples": [
+            {
+              "aircraft_id": "UAV-001",
+              "before": {
+                "position": {
+                  "x": 800.0,
+                  "y": 1625.0,
+                  "z": 150.0
+                },
+                "path": [
+                  {
+                    "x": 800.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 920.0,
+                    "y": 1700.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 1400.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 2000.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3600.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1625.0,
+                    "z": 0.0
+                  }
+                ],
+                "path_omitted": false,
+                "planned_speed_mps": 15,
+                "wait_s": 0.0,
+                "remaining_distance_m": 3277.3337592018984,
+                "destination": {
+                  "x": 3900.0,
+                  "y": 1625.0,
+                  "z": 0.0
+                },
+                "status": "en_route"
+              },
+              "after": {
+                "position": {
+                  "x": 800.0,
+                  "y": 1625.0,
+                  "z": 150.0
+                },
+                "path": [
+                  {
+                    "x": 800.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 920.0,
+                    "y": 1700.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 1400.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 2000.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3600.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1625.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1625.0,
+                    "z": 0.0
+                  }
+                ],
+                "path_omitted": false,
+                "planned_speed_mps": 15,
+                "wait_s": 12.0,
+                "remaining_distance_m": 3277.3337592018984,
+                "destination": {
+                  "x": 3900.0,
+                  "y": 1625.0,
+                  "z": 0.0
+                },
+                "status": "en_route"
+              }
+            },
+            {
+              "aircraft_id": "UAV-005",
+              "before": {
+                "position": {
+                  "x": 800.0,
+                  "y": 1775.0,
+                  "z": 150.0
+                },
+                "path": [
+                  {
+                    "x": 800.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 920.0,
+                    "y": 1700.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 1400.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 2000.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3600.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1775.0,
+                    "z": 0.0
+                  }
+                ],
+                "path_omitted": false,
+                "planned_speed_mps": 15,
+                "wait_s": 0.0,
+                "remaining_distance_m": 3277.3337592018984,
+                "destination": {
+                  "x": 3900.0,
+                  "y": 1775.0,
+                  "z": 0.0
+                },
+                "status": "en_route"
+              },
+              "after": {
+                "position": {
+                  "x": 800.0,
+                  "y": 1775.0,
+                  "z": 150.0
+                },
+                "path": [
+                  {
+                    "x": 800.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 920.0,
+                    "y": 1700.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 1400.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 2000.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3600.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1775.0,
+                    "z": 150.0
+                  },
+                  {
+                    "x": 3900.0,
+                    "y": 1775.0,
+                    "z": 0.0
+                  }
+                ],
+                "path_omitted": false,
+                "planned_speed_mps": 15,
+                "wait_s": 0.0,
+                "remaining_distance_m": 3277.3337592018984,
+                "destination": {
+                  "x": 3900.0,
+                  "y": 1775.0,
+                  "z": 0.0
+                },
+                "status": "en_route"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "EV64be4241671b",
+      "type": "event_info",
+      "timestamp": "2026-10-20T14:43:44.510077Z",
+      "location": null,
+      "severity": "info",
+      "description": "单项场景 conflict 已停止；结果来自实际仿真",
+      "related_id": null,
+      "payload": {},
+      "handled": true,
+      "simulation_time": 70.0,
+      "processed_at": "2026-10-20T14:43:44.510087Z",
+      "processing_ms": 0.0,
+      "result": {
+        "scenario": "conflict",
+        "observed": true,
+        "resolved_conflicts": 1,
+        "emergency_landings": 0
+      }
+    }
+  ],
+  "benchmark": {
+    "setup_seconds": 1.0758295199993881,
+    "execution_seconds": 0.23090810899884673,
+    "requested_steps": 300,
+    "executed_steps": 70,
+    "aircraft": 24,
+    "seed": 42,
+    "scenario": "conflict"
+  }
+}

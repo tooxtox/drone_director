@@ -9,6 +9,7 @@ __pycache__/
 # Virtualenv
 .venv/
 .venv-runtime/
+.venv-demo/
 venv/
 
 # Environment

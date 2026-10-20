@@ -2,6 +2,8 @@ import { computed, reactive, shallowRef } from 'vue';
 import { api, downloadReport } from '../services/api';
 import type { Snapshot } from '../types/simulation';
 
+type StreamSnapshot = Omit<Snapshot, 'waypoints'> & { waypoints?: Snapshot['waypoints'] };
+
 export const snapshot = shallowRef<Snapshot | null>(null);
 export const connection = reactive({ state: 'connecting' as 'connecting' | 'live' | 'reconnecting', error: '', busy: false, lastUpdate: 0 });
 export const selectedAircraftId = shallowRef('');
@@ -11,9 +13,14 @@ let retryTimer: ReturnType<typeof setTimeout> | undefined;
 let disposed = false;
 let attempt = 0;
 
-function accept(data: Snapshot) {
+function accept(data: StreamSnapshot) {
   if (!data?.simulation || !data.metrics) return;
-  snapshot.value = { ...data, environment: 'environment' in data ? data.environment : snapshot.value?.environment };
+  const previous = snapshot.value;
+  snapshot.value = {
+    ...data,
+    environment: 'environment' in data ? data.environment : previous?.environment,
+    waypoints: data.waypoints ?? (data.environment_version === previous?.environment_version ? previous.waypoints : []),
+  };
   connection.lastUpdate = Date.now();
 }
 

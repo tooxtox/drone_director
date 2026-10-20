@@ -1,0 +1,83 @@
+{
+  "weight_sensitivity": [
+    {
+      "risk_weight": 0,
+      "route": [
+        "S",
+        "T"
+      ],
+      "distance_m": 1000.0,
+      "cost": 1.0,
+      "direct_cost": 1,
+      "detour_cost": 1.4142135623730951
+    },
+    {
+      "risk_weight": 0.2,
+      "route": [
+        "S",
+        "T"
+      ],
+      "distance_m": 1000.0,
+      "cost": 1.2,
+      "direct_cost": 1.2,
+      "detour_cost": 1.4142135623730951
+    },
+    {
+      "risk_weight": 0.5,
+      "route": [
+        "S",
+        "D",
+        "T"
+      ],
+      "distance_m": 1414.213562373095,
+      "cost": 1.4142135623730951,
+      "direct_cost": 1.5,
+      "detour_cost": 1.4142135623730951
+    },
+    {
+      "risk_weight": 1,
+      "route": [
+        "S",
+        "D",
+        "T"
+      ],
+      "distance_m": 1414.213562373095,
+      "cost": 1.4142135623730951,
+      "direct_cost": 2,
+      "detour_cost": 1.4142135623730951
+    },
+    {
+      "risk_weight": 2,
+      "route": [
+        "S",
+        "D",
+        "T"
+      ],
+      "distance_m": 1414.213562373095,
+      "cost": 1.4142135623730951,
+      "direct_cost": 3,
+      "detour_cost": 1.4142135623730951
+    },
+    {
+      "risk_weight": 3,
+      "route": [
+        "S",
+        "D",
+        "T"
+      ],
+      "distance_m": 1414.213562373095,
+      "cost": 1.4142135623730951,
+      "direct_cost": 4,
+      "detour_cost": 1.4142135623730951
+    }
+  ],
+  "oracle_check": {
+    "random_seed": 28,
+    "graphs": 100,
+    "nodes_per_graph": 24,
+    "queries": 300,
+    "max_abs_cost_error": 3.552713678800501e-15,
+    "weather_weight": 0,
+    "scope": "非负权重静态随机有向图，未覆盖城市几何与天气障碍"
+  }
+}

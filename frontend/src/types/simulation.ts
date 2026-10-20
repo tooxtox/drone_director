@@ -3,6 +3,7 @@ export interface Polygon { points: { x: number; y: number }[] }
 export interface Aircraft {
   id: string; name?: string; position: Position; speed: number; heading: number;
   status: string; battery: number; priority: number; destination?: Position | null;
+  motion_samples?: {time_s:number;position:Position;heading:number}[];
   trajectory?: Position[]; flight_plan?: Position[]; mission_id?: string;
   remaining_distance_m?: number; delay_s?: number;
 }
@@ -16,6 +17,7 @@ export interface SimulationEvent {
   description: string; severity: string; handled: boolean; related_id?: string | null; result: Record<string, unknown>;
 }
 export interface Environment {
+  ground_layout?: { block_period:number;street_width:number;emergency_site_size:number;emergency_road_setback:number;emergency_pad_radius:number;terminal_buffer:number };
   name: string; origin: { latitude: number; longitude: number; altitude: number };
   bounds: { min_x: number; min_y: number; max_x: number; max_y: number };
   buildings: { id: string; footprint: Polygon; height: number; elevation: number }[];
@@ -30,7 +32,7 @@ export interface HistoryPoint { time_s: number; conflicts: number; route_utiliza
 export interface Snapshot {
   version: number; environment_version: number;
   simulation: { time_s: number; running: boolean; speed: number; tick_seconds: number; demo_stage: number; demo_complete: boolean; demo_scenario: 'full' | 'congestion' | 'weather' | 'closure' | 'failure' | 'conflict' };
-  aircraft: Aircraft[]; missions: unknown[]; waypoints: Waypoint[]; routes: Route[];
+  aircraft: Aircraft[]; missions?: unknown[]; waypoints: Waypoint[]; routes: Route[];
   weather: Weather[]; restrictions: Restriction[]; conflicts: Conflict[]; events: SimulationEvent[];
   metrics: Metrics; history: HistoryPoint[]; environment?: Environment | null;
 }

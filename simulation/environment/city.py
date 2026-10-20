@@ -8,6 +8,7 @@ from core.coords import GeoOrigin
 from core.models import Building, CityConfig, Position3D
 from core.models.geometry import Position2D
 from simulation.environment.grid import OccupancyGrid2D
+from simulation.environment.ground import ground_layout
 
 
 class CityEnvironment:
@@ -119,4 +120,5 @@ class CityEnvironment:
             "building_count": self.building_count,
             "max_building_height": round(self.max_building_height(), 2),
             "grid": self.grid.stats(),
+            "ground_layout": ground_layout(),
         }

@@ -1,0 +1,20 @@
+{
+  "使用说明.txt": "c014b558414e6d7e68ce4f8dbfa8429c57f836928e1eae189362c548be2042eb",
+  "城市空中交通规划创新方案.pdf": "e80d348d28ea80a78bffc03b8d761641932b19e03bb0b4a2ecec5c7e8c5c4658",
+  "城市空中交通规划创新方案_答辩.pptx": "696223a4d63d046710b6bd8cd9ae44794a2c033352a12a0e65eca2f6b4402742",
+  "逐页讲稿.md": "8205cff94baf8062634f474f12966615878a9c93666ae9bce64a187b5243b3a0",
+  "evidence/algorithm.json": "fe6ef8564c9682395f0a35a69c051d93b7b1059b2d749822851eb2ec28585995",
+  "evidence/algorithm_evidence.py": "6fca89c319c06238f3e2fa7e662972cf7f8e0181ad6bc8e57836e5ce5403d497",
+  "evidence/closure.json": "931442c445d3c0b8f9b6ba3aa09dece905394582c84e9ccd3e5d7e3f202bc43f",
+  "evidence/conflict-recording.json": "db73bbfdbab2809b903061625bc7aae62f7efd4893c3aeb99ba867bae4c6562b",
+  "evidence/conflict.json": "26c06e7b7b72454b6ab8e2b24904cc3e01fe6a9e9b7161667853bde80fcc966d",
+  "evidence/congestion.json": "665da1338a534e6ba9d9f7d1e5a1b398b29937c6fcf3b05876e27a6b6e41e890",
+  "evidence/failure-recording.json": "df6701a96e1f609773b5085a4b999a22eddd3e454da82ca1cedac4f0952de046",
+  "evidence/failure.json": "43e7ef8035df9c559c6253132c9a5cabf53a8ad2646d54513a63b8e595f8d112",
+  "evidence/full.json": "3c36d08f78e8bb8438356b0c5aba96a7111e82e53db9de9a6a9ca2564681a088",
+  "evidence/weather-recording.json": "66208996918b51203878e88cb42bc0757cbfe6478930b5932f2fe9d9866fc1bd",
+  "evidence/weather.json": "6859d747955353cd60e667a821e06f8091df410ce6f41b3f4e41335e82173272",
+  "视频/conflict.mp4": "35db428798de73b62c9f7dba7b31d0b5c914da5212a34524125d4fdd202dd0f8",
+  "视频/failure.mp4": "161169be29771340c1a52792b53cfce39747e0e16ef3b9bd1bccfd16cc3af33c",
+  "视频/weather.mp4": "3ae0b0e138e117781be244c211ec468a1c07b14e3ca6381be4198c852007f363"
+}

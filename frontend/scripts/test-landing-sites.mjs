@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import ts from 'typescript';
+const code=ts.transpileModule(await readFile(new URL('../src/scene/landingSites.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText;
+const {emergencySites,groundLayout}=await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const environment={bounds:{min_x:0,min_y:0,max_x:1000,max_y:1000},buildings:[]};
+const bay=(x,y,id='EB')=>({id,type:'emergency_bay',position:{x,y,z:0}});
+assert.equal(emergencySites(environment,[bay(100,100)]).length,1);
+for(const p of [bay(200,100),bay(60,100),bay(10,10)])assert.equal(emergencySites(environment,[p]).length,0);
+const near={id:'PAD',type:'vertiport',position:{x:165,y:100,z:0}};assert.equal(emergencySites(environment,[bay(100,100),near]).length,0);
+assert.equal(emergencySites(environment,[bay(100,100),{...near,position:{x:180,y:100,z:0}}]).length,1);
+assert.equal(emergencySites({...environment,buildings:[{footprint:{points:[{x:70,y:70},{x:80,y:70},{x:80,y:80},{x:70,y:80}]}}]},[bay(100,100)]).length,0);
+assert.equal(emergencySites({...environment,bounds:{min_x:35,min_y:70,max_x:1035,max_y:1070}},[bay(135,170)]).length,1);
+assert.equal(groundLayout(environment).emergency_site_size,80);
+console.log('Landing-site checks passed: whole-lot road setback, terminal separation, building exclusion and shifted grid.');

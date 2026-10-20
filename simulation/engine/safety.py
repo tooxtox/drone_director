@@ -1,6 +1,6 @@
 """Rule candidates are checked for physical continuity, obstacles and fleet separation."""
 
-from copy import deepcopy
+from copy import copy, deepcopy
 
 from algorithms.conflict_detection import ConflictThresholds, TrajectoryPoint, detect_conflicts
 from algorithms.conflict_resolution import ResolutionCandidate, ResolutionEnvironment, ResolutionWeights, resolve_conflict
@@ -8,6 +8,7 @@ from algorithms.path_planning import PlanningError
 from core.models import AircraftStatus, Event, EventType, Position3D, PrecipitationType, Severity
 from simulation.aircraft.flight import FlightPlan
 from simulation.engine.planning import plan_flight
+from simulation.events.presentation import capture_flights, decision_evidence
 
 
 def thresholds(engine):
@@ -33,7 +34,7 @@ def forecast(engine, limits):
 def forecast_plan(engine, aircraft_id, plan, limits):
     """Prediction uses the same motion, range and capacity gates as execution."""
     aircraft = engine.aircraft[aircraft_id].model_copy(deep=True)
-    predicted = deepcopy(plan)
+    predicted = copy(plan)  # advance changes cursor/wait only; route and position lists are read-only.
     trace = []
     predicted.advance(aircraft, limits.time_window_s,
         lambda cursor: engine._can_enter(aircraft_id, predicted, cursor, position=aircraft.position), trace)
@@ -128,6 +129,7 @@ def manage_conflicts(engine):
             thresholds=limits, now=engine.time_s, weights=weights))
         if decision.success:
             aircraft_id = decision.aircraft_id
+            previous = capture_flights(engine, [aircraft_id, conflict.aircraft_a, conflict.aircraft_b])
             plan = plans[decision.parameters["candidate_key"]]
             engine.plans[aircraft_id] = plan
             trajectories[aircraft_id] = forecast_plan(engine, aircraft_id, plan, limits)
@@ -135,7 +137,8 @@ def manage_conflicts(engine):
             engine._record(Event(type=EventType.CONFLICT, severity=Severity.WARNING,
                 location=conflict.conflict_position, related_id=aircraft_id,
                 description=f"{conflict.aircraft_a} / {conflict.aircraft_b} 预测冲突，执行 {decision.action}",
-                result={**decision.model_dump(mode="json"), "predicted_conflict":conflict.model_dump(mode="json")}))
+                result={**decision.model_dump(mode="json"), "predicted_conflict":conflict.model_dump(mode="json"),
+                        "presentation":decision_evidence(engine, previous)}))
         else:
             engine.alert(conflict.aircraft_a, f"与 {conflict.aircraft_b} 的预测冲突尚无安全候选方案")
     engine.conflicts = detect_conflicts(trajectories, limits, engine.time_s)

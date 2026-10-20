@@ -29,7 +29,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_demo.ps1 -Back
 
 访问 http://127.0.0.1:5173 ，点击“生成 100 机演示场景”，再点击“启动仿真”。默认后端端口 8011；如被占用可运行 .\scripts\run_demo.ps1 -BackendPort 8013 -FrontendPort 5174。退出脚本会停止本次启动的后端。单独启动后端用 .\scripts\run_backend.ps1，单独启动前端用 .\scripts\run_frontend.ps1，测试用 .\scripts\run_tests.ps1。
 
-发布式本地运行：在 frontend 目录执行 npm run build，随后只运行后端并访问 http://127.0.0.1:8011/ 。构建后的 Cesium 资源由同一服务提供。程序化城市不依赖在线地图、Cesium ion token 或外部服务。交互式 API 文档在 http://127.0.0.1:8011/docs ，OpenAPI JSON 在 /openapi.json。
+发布式本地运行：在 frontend 目录执行 npm run build，随后只运行后端并访问 http://127.0.0.1:8011/ 。构建后的 Three.js 城市资源由同一服务提供。程序化城市不依赖在线地图或外部服务；GitHub 开源来源与改造见 [城市来源说明](docs/city-sources.md)。交互式 API 文档在 http://127.0.0.1:8011/docs ，OpenAPI JSON 在 /openapi.json。
 
 无浏览器运行同一自动演示：
 
@@ -48,7 +48,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_demo.ps1 -Back
 | algorithms/conflict_detection、algorithms/conflict_resolution、algorithms/emergency | 连续时空检测、规则解脱、安全备降 |
 | simulation/environment、simulation/aircraft、simulation/engine、simulation/events | 三维城市、航路网、运动、仿真时钟、事件与指标 |
 | backend/api、backend/services、backend/websocket、backend/config | HTTP/WS、事务、运行调度、集中配置 |
-| frontend/src | Vue、TypeScript、Cesium、ECharts 控制台 |
+| frontend/src | Vue、TypeScript、Three.js、ECharts 控制台 |
 | tests、docs、scripts、data | 测试、设计、脚本、种子和报告 |
 
 详见 [架构](docs/architecture.md)、[数据模型](docs/data-model.md)、[航路规划](docs/path-planning.md)、[API 与 WebSocket](docs/api.md)、[演示与指标](docs/demo.md)、[阶段验收](docs/iterations.md)。
@@ -57,11 +57,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_demo.ps1 -Back
 
 控制台可启动、暂停、单步推进、设定仿真倍率，显示建筑、航路、无人机、轨迹、天气、管制与冲突，并支持四类事件注入。基础实体和任务也可以通过 HTTP API 创建和编辑；运行时基础编辑需先暂停，事件可直接注入。
 
-右侧“单项事件场景”可分别生成 24 机的拥堵、雷暴、临时管制、故障备降和两机冲突场景；点击卡片后前端用真实仿真单步推进到该事件发生后的第一秒并暂停，地图自动放大到实际受影响的飞行器，启动仿真后持续跟踪，点击“退出跟踪 · 总览”恢复城市视角。雷暴或管制预设会覆盖两架正在飞行的无人机：它们立即飞向区域外的安全出口，再沿重新规划的航路继续任务；尚未进入区域的飞机直接绕行。启动前及扰动注入后立即进行全机间距预测，随后每个仿真步均复检预测轨迹和实际运动；无法安全解脱则暂停。单项报告可用无浏览器命令 `--scenario congestion|weather|closure|failure|conflict --steps 180` 分别生成到 data/scenarios/。详情见[演示与指标](docs/demo.md)。
+右侧“单项事件场景”可分别生成 24 机四向的拥堵、雷暴、临时管制、故障备降和两机冲突场景，每方向 6 架；卡片标明事件时刻，点击后停在仿真 0 秒。点击“启动仿真”，可连续观看事件前飞行、事件触发和后续处置；事件发生后地图定位实际影响区域、航路或故障机，点击“城市总览”恢复城市视角。雷暴或管制预设会覆盖两架正在飞行的无人机：它们立即飞向区域外的安全出口，再沿重新规划的航路继续任务；尚未进入区域的飞机直接绕行。启动前及扰动注入后立即进行全机间距预测，随后每个仿真步均复检预测轨迹和实际运动；无法安全解脱则暂停。拥堵、雷暴和管制场景在事件后运行 80 秒；故障和冲突场景若到 220 秒仍无实际结果则停止，一旦出现结果则保证其后至少运行 30 秒。单项报告可用无浏览器命令 `--scenario congestion|weather|closure|failure|conflict --steps 300` 分别生成到 data/scenarios/。详情见[演示与指标](docs/demo.md)。
 
 100 机初始场景由随机种子生成，不预置结果。仿真时间约 20 秒收缩航路容量、45 秒注入东部雷暴、70 秒注入单机故障、95 秒构造交汇任务意图；预测器检测冲突并选择安全规则。雷暴 160 秒消散并继续调度。220 秒表示四类扰动已经执行，任务仍继续运行；全部任务进入终态或达到 600 秒时演示停止。失去可达路径的任务会等待或如实报告。报告包含实际事件结果和采样历史。
 
-100 机运行已减少重复的航段约束计算和整队占用扫描；控制台复用静态 Cesium 图形，并对轨迹更新与未变化的 WebSocket 快照做限流。本机无浏览器完整仿真 459 步约 44.7 秒（优化前约 70.5 秒），安全阈值与逐步轨迹复检保持不变。具体结果见[演示与指标](docs/demo.md)。
+100 机运行已减少重复的航段约束计算和整队占用扫描；控制台复用静态城市图形，并对轨迹更新与未变化的 WebSocket 快照做限流。本机无浏览器完整仿真 459 步约 44.7 秒（优化前约 70.5 秒），安全阈值与逐步轨迹复检保持不变。具体结果见[演示与指标](docs/demo.md)。
 
 ## 约束与精度
 

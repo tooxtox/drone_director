@@ -14,14 +14,14 @@ let observer: ResizeObserver | undefined;
 function update() {
   const points = props.history.slice(-240);
   chart?.setOption({
-    animation: false, color: ['#e8a33d', '#0e8f83'],
-    tooltip: { trigger: 'axis', backgroundColor: '#ffffff', borderColor: '#e3e8ee', textStyle: { color: '#16202a', fontSize: 11 }, extraCssText: 'box-shadow: 0 8px 24px -12px rgba(16,32,48,.4); border-radius: 8px;' },
-    legend: { top: 0, right: 10, itemWidth: 12, itemHeight: 5, textStyle: { color: '#5b6b7c', fontSize: 10 } },
+    animation: false, color: ['#e8a33d', '#41cbb9'],
+    tooltip: { trigger: 'axis', backgroundColor: '#101e2d', borderColor: '#263849', textStyle: { color: '#dce7f1', fontSize: 11 }, extraCssText: 'box-shadow: 0 8px 24px -12px rgba(16,32,48,.4); border-radius: 8px;' },
+    legend: { top: 0, right: 10, itemWidth: 12, itemHeight: 5, textStyle: { color: '#8193a7', fontSize: 10 } },
     grid: { top: 36, left: 38, right: 36, bottom: 27 },
     xAxis: { type: 'category', data: points.map(p => `${Math.round(p.time_s)}s`), boundaryGap: false,
-      axisLabel: { color: '#8794a4', fontSize: 10 }, axisLine: { lineStyle: { color: '#e3e8ee' } }, axisTick: { show: false } },
+      axisLabel: { color: '#8794a4', fontSize: 10 }, axisLine: { lineStyle: { color: '#263849' } }, axisTick: { show: false } },
     yAxis: [{ type: 'value', min: 0, minInterval: 1, axisLabel: { color: '#8794a4', fontSize: 10 },
-      splitLine: { lineStyle: { color: '#eef1f5', type: 'dashed' } } },
+      splitLine: { lineStyle: { color: '#263849', type: 'dashed' } } },
     { type: 'value', min: 0, axisLabel: { color: '#8794a4', fontSize: 10, formatter: '{value}%' }, splitLine: { show: false } }],
     series: [
       { name: '冲突 / 次', type: 'line', showSymbol: false, step: 'end', data: points.map(p => p.conflicts), lineStyle: { width: 1.8 } },

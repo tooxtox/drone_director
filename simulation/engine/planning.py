@@ -3,7 +3,7 @@
 import math
 
 from algorithms.path_planning import CostWeights, PlanningContext, PlanningError, plan_path
-from core.models import Position3D, PrecipitationType
+from core.models import Position3D, PrecipitationType, WaypointType
 from simulation.aircraft.flight import FlightPlan
 
 
@@ -31,6 +31,14 @@ def plan_flight(engine, aircraft, destination: Position3D, *, max_distance=None,
         engine._segment_cache = {}
         engine._segment_cache_version = engine.environment.version
     graph = engine.environment.network.graph.copy()
+    # Ground terminals are endpoints, never transfer nodes between cruise layers.
+    # This also keeps normal reroutes out of an occupied emergency landing lot.
+    graph.remove_nodes_from([
+        node for node, data in graph.nodes(data=True)
+        if data.get("type") in (WaypointType.VERTIPORT.value, WaypointType.EMERGENCY_BAY.value)
+        and data["position"].distance_to(aircraft.position) > 1e-7
+        and data["position"].distance_to(destination) > 1e-7
+    ])
     for _, _, edge in graph.edges(data=True):
         # Occupancy is measured from moving aircraft, not seed counters.
         edge["current_flow"] = max((engine.occupancy.get(r, 0) for r in edge.get("route_ids", [])), default=0)

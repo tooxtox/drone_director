@@ -28,6 +28,7 @@ class Engine:
             self.plans: dict[str, FlightPlan] = {}
             self.distances: dict[str, float] = {}
             self.trails: dict[str, deque] = {}
+            self.motion_history: dict[str, deque] = {}
             self.history: deque = deque(maxlen=1000)
             self.conflicts = []
             self.resolved_conflicts = 0
@@ -123,7 +124,9 @@ class Engine:
         if not manage_conflicts(self):
             self.version += 1
             return False
-        saved = deepcopy((self.aircraft, self.plans, self.missions, self.distances, self.trails))
+        # Trail entries are appended snapshots and never mutated, so a deque copy preserves rollback.
+        saved = (*deepcopy((self.aircraft, self.plans, self.missions)),
+                 self.distances.copy(), {key: trail.copy() for key, trail in self.trails.items()})
         event_count = len(self.events)
         actual_trajectories = {}
         for aircraft in sorted(self.aircraft.values(), key=lambda a: (-a.priority, a.id)):
@@ -183,6 +186,24 @@ class Engine:
             self.conflicts = realized
             self._measure_occupancy()
             self.alert("fleet", "执行前的整步轨迹复检发现冲突，已取消本步运动并暂停")
+        # Keep observed sub-step corners, including the exact touchdown point.
+        # A rejected step records only the restored stationary pose.
+        for key, aircraft in self.aircraft.items():
+            old = saved[0].get(key, aircraft)
+            trace = actual_trajectories.get(key) if not realized else None
+            trace = trace or [(0.0, old.position), (self.tick_seconds, aircraft.position)]
+            history = self.motion_history.setdefault(key, deque(maxlen=32))
+            previous, heading = old.position, old.heading
+            for offset, position in trace:
+                dx, dy = position.x-previous.x, position.y-previous.y
+                if math.hypot(dx, dy)>1e-8:
+                    heading = math.degrees(math.atan2(dx, dy)) % 360
+                sample = {"time_s": self.time_s+offset, "position": position.model_dump(), "heading": heading}
+                if history and abs(history[-1]["time_s"]-sample["time_s"])<1e-8:
+                    history[-1] = sample
+                else:
+                    history.append(sample)
+                previous = position
         self.time_s += self.tick_seconds
         self.version += 1
         metrics = collect_metrics(self)
@@ -330,6 +351,7 @@ class Engine:
                 mission = self._mission_for(item.id)
                 aircraft.append({**item.model_dump(mode="json"), "trajectory": list(self.trails.get(item.id, []))[-90:],
                                  "flight_plan": [item.position.model_dump(), *[p.model_dump() for p in plan.positions[plan.cursor:]]] if plan else [],
+                                 "motion_samples": list(self.motion_history.get(item.id, []))[-min(32, max(6, math.ceil(self.speed*.5/self.tick_seconds)+3)):],
                                  "mission_id": mission.id if mission else None,
                                  "remaining_distance_m": plan.remaining_distance(item.position) if plan else 0,
                                  "delay_s": mission.delay_s if mission else 0})
@@ -370,6 +392,7 @@ class Engine:
                 "time_s": self.time_s, "speed": self.speed, "version": self.version,
                 "plans": {key: plan.to_dict() for key, plan in self.plans.items()},
                 "distances": self.distances, "trails": {key: list(value) for key, value in self.trails.items()},
+                "motion_history": {key: list(value) for key, value in self.motion_history.items()},
                 "history": list(self.history), "bay_reservations": self.bay_reservations,
                 "demo_stage": self.demo_stage, "demo_enabled": self.demo_enabled,
                 "demo_complete": self.demo_complete, "demo_scenario": self.demo_scenario,
@@ -400,6 +423,7 @@ class Engine:
                 self.emergency_response_count = len(failure_events)
             self.plans = {key: FlightPlan.from_dict(value) for key, value in data["plans"].items() if key in self.aircraft}
             self.trails = {key: deque(value, maxlen=180) for key, value in data["trails"].items()}
+            self.motion_history = {key: deque(value, maxlen=32) for key, value in data.get("motion_history", {}).items() if key in self.aircraft}
             self.history = deque(data["history"], maxlen=1000)
             self.running = False
             self._measure_occupancy()

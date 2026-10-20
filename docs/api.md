@@ -72,9 +72,9 @@ PUT 替换可写字段，路径 ID 是固定标识；内部统计字段保留，
 连接 `/api/ws`，运行状态变化时服务端约每 200ms 发送一个快照；状态不变时约每 2 秒发送一次，以减少重复序列化和浏览器重绘：
 
 ```json
-{"type":"snapshot","sequence":1,"data":{"version":1,"environment_version":1,"simulation":{},"aircraft":[],"metrics":{},"history":[],"events":[]}}
+{"type":"snapshot","sequence":1,"data":{"version":1,"environment_version":1,"environment":{},"waypoints":[],"simulation":{},"aircraft":[],"metrics":{},"history":[],"events":[]}}
 ```
 
-首帧包含完整 environment；环境版本变化时重新发送环境，其他帧只省略静态建筑数据。
-客户端保存最近 environment，每次重连重新获取完整快照。sequence 仅在当前连接内递增。
-运行动态数据为完整快照，不需要补放丢失的帧；慢客户端不会让仿真阻塞或无限缓存消息。
+首帧包含完整 `environment` 和 `waypoints`；`environment_version` 变化时重新发送两者，版本不变的帧省略它们。客户端保存最近的环境与航点，每次重连从首帧重新获取。
+WebSocket 帧不包含前端未使用的 `missions`，`history` 只包含最近 240 条。`GET /api/simulation/state` 仍返回完整任务与历史记录；报告仍返回完整历史记录。
+`sequence` 仅在当前连接内递增。其余运行动态数据为完整快照，不需要补放丢失的帧；慢客户端不会让仿真阻塞或无限缓存消息。
